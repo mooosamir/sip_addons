@@ -1,0 +1,221 @@
+/* VoIP WebRTC FreePBX Styles */
+
+.o_voip_systray {
+    position: relative;
+}
+
+.o_voip_systray .dropdown-toggle {
+    position: relative;
+    padding: 5px 10px;
+    background: transparent;
+    border: none;
+    color: #333;
+}
+
+.o_voip_systray .dropdown-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.o_voip_systray .dropdown-toggle.o_voip_registered {
+    color: #28a745;
+}
+
+.o_voip_systray .dropdown-toggle.o_voip_in_call {
+    color: #dc3545;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.o_voip_call_badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 9px;
+    padding: 2px 4px;
+}
+
+.o_voip_dialer {
+    min-width: 320px;
+    max-width: 350px;
+    padding: 0;
+}
+
+.o_voip_dialer_header {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.o_voip_dialer_header h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.o_voip_dialer_body {
+    padding: 15px;
+}
+
+.o_voip_number_display {
+    margin-bottom: 15px;
+}
+
+.o_voip_number_display input {
+    font-size: 18px;
+    text-align: center;
+    font-weight: 600;
+    height: 50px;
+}
+
+.o_voip_dialpad {
+    margin-bottom: 15px;
+}
+
+.o_voip_dialpad_row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.o_voip_dialpad_row button {
+    flex: 1;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    border: 1px solid #dee2e6;
+}
+
+.o_voip_dialpad_row button:hover {
+    background-color: #e9ecef;
+}
+
+.o_voip_dialpad_row button:active {
+    background-color: #dee2e6;
+}
+
+.o_voip_actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.o_voip_actions button {
+    height: 45px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.o_voip_active_call {
+    padding: 20px;
+    text-align: center;
+}
+
+.o_voip_call_info {
+    margin-bottom: 20px;
+}
+
+.o_voip_call_number {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.o_voip_call_duration {
+    font-size: 32px;
+    font-weight: 700;
+    color: #dc3545;
+    font-family: 'Courier New', monospace;
+}
+
+.o_voip_call_actions button {
+    height: 50px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.o_voip_recent_calls {
+    border-top: 1px solid #dee2e6;
+    padding-top: 15px;
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.o_voip_section_title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.o_voip_recent_call {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.o_voip_recent_call:hover {
+    background-color: #f8f9fa;
+}
+
+.o_voip_call_icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.o_voip_call_details {
+    flex: 1;
+}
+
+.o_voip_call_name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.o_voip_call_meta {
+    font-size: 11px;
+    color: #6c757d;
+}
+
+.o_voip_dialer_footer {
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+}
+
+.o_voip_dialer_footer button {
+    font-size: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .o_voip_dialer {
+        min-width: 280px;
+    }
+    
+    .o_voip_dialpad_row button {
+        height: 45px;
+        font-size: 16px;
+    }
+}

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- VoIP Recording Form View -->
+        <record id="view_voip_recording_form" model="ir.ui.view">
+            <field name="name">voip.recording.form</field>
+            <field name="model">voip.recording</field>
+            <field name="arch" type="xml">
+                <form string="Call Recording">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="recording,completed"/>
+                        <button name="action_share_recording" type="object" string="Share" class="oe_highlight"/>
+                        <button name="action_download_recording" type="object" string="Download" attrs="{'invisible': [('recording_file', '=', False)]}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="recording_info" string="Recording Information">
+                                <field name="call_id"/>
+                                <field name="user_id" readonly="1"/>
+                                <field name="recording_type"/>
+                                <field name="format"/>
+                            </group>
+                            <group name="file_info" string="File Information">
+                                <field name="recording_filename" readonly="1"/>
+                                <field name="file_size_display"/>
+                                <field name="duration_display"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group name="sharing" string="Sharing">
+                                <field name="shared_with_ids" widget="many2many_tags"/>
+                            </group>
+                            <group name="technical" string="Technical">
+                                <field name="recording_url"/>
+                            </group>
+                        </group>
+                        <group string="Recording File">
+                            <field name="recording_file" filename="recording_filename" attrs="{'invisible': [('recording_file', '=', False)]}"/>
+                        </group>
+                        <notebook>
+                            <page string="Notes" name="notes">
+                                <field name="notes" placeholder="Add notes about this recording..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- VoIP Recording Tree View -->
+        <record id="view_voip_recording_tree" model="ir.ui.view">
+            <field name="name">voip.recording.tree</field>
+            <field name="model">voip.recording</field>
+            <field name="arch" type="xml">
+                <tree string="Call Recordings">
+                    <field name="name"/>
+                    <field name="call_id"/>
+                    <field name="user_id"/>
+                    <field name="duration_display"/>
+                    <field name="file_size_display"/>
+                    <field name="recording_type"/>
+                    <field name="format"/>
+                    <field name="state" widget="badge" decoration-success="state == 'completed'" decoration-warning="state == 'recording'"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- VoIP Recording Kanban View -->
+        <record id="view_voip_recording_kanban" model="ir.ui.view">
+            <field name="name">voip.recording.kanban</field>
+            <field name="model">voip.recording</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="call_id"/>
+                    <field name="user_id"/>
+                    <field name="duration_display"/>
+                    <field name="file_size_display"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong>
+                                            <i class="fa fa-microphone text-success"/>
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-8">
+                                        <i class="fa fa-phone"/> <field name="call_id"/>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <field name="state" widget="label_selection"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <i class="fa fa-clock-o"/> <field name="duration_display"/>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <i class="fa fa-file"/> <field name="file_size_display"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <i class="fa fa-calendar"/> <field name="create_date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- VoIP Recording Search View -->
+        <record id="view_voip_recording_search" model="ir.ui.view">
+            <field name="name">voip.recording.search</field>
+            <field name="model">voip.recording</field>
+            <field name="arch" type="xml">
+                <search string="Call Recordings">
+                    <field name="name"/>
+                    <field name="call_id"/>
+                    <field name="user_id"/>
+                    <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                    <filter string="Recording" name="recording" domain="[('state', '=', 'recording')]"/>
+                    <separator/>
+                    <filter string="Automatic" name="automatic" domain="[('recording_type', '=', 'automatic')]"/>
+                    <filter string="Manual" name="manual" domain="[('recording_type', '=', 'manual')]"/>
+                    <separator/>
+                    <filter string="My Recordings" name="my_recordings" domain="['|', ('user_id', '=', uid), ('shared_with_ids', 'in', uid)]"/>
+                    <filter string="Shared With Me" name="shared_with_me" domain="[('shared_with_ids', 'in', uid), ('user_id', '!=', uid)]"/>
+                    <separator/>
+                    <filter string="Today" name="today" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Week" name="this_week" domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Month" name="this_month" domain="[('create_date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d'))]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
+                        <filter string="Call" name="group_call" context="{'group_by': 'call_id'}"/>
+                        <filter string="Type" name="group_type" context="{'group_by': 'recording_type'}"/>
+                        <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Date" name="group_date" context="{'group_by': 'create_date:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- VoIP Recording Action -->
+        <record id="action_voip_recording" model="ir.actions.act_window">
+            <field name="name">Call Recordings</field>
+            <field name="res_model">voip.recording</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_my_recordings': 1, 'search_default_completed': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No recordings found
+                </p>
+                <p>
+                    Call recordings will appear here once recording is enabled and calls are recorded.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

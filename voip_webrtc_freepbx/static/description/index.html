@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoIP WebRTC FreePBX - Odoo 17</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .header p {
+            font-size: 1.2em;
+            margin: 10px 0 0 0;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .section h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .feature i {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .feature h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>VoIP WebRTC FreePBX</h1>
+        <p>Full-featured VoIP and WebRTC integration for Odoo 17</p>
+    </div>
+
+    <div class="section">
+        <h2>Overview</h2>
+        <p>
+            This module provides comprehensive VoIP functionality for Odoo 17 Community Edition,
+            enabling seamless integration with FreePBX servers using WebRTC technology.
+            Make and receive calls directly from your Odoo interface with full call management capabilities.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>Key Features</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>WebRTC Calling</h3>
+                <p>Browser-based calling without plugins using modern WebRTC technology</p>
+            </div>
+            <div class="feature">
+                <h3>FreePBX Integration</h3>
+                <p>Direct connection to your FreePBX server via SIP/WebSocket</p>
+            </div>
+            <div class="feature">
+                <h3>Call Recording</h3>
+                <p>Automatic call recording with playback and download capabilities</p>
+            </div>
+            <div class="feature">
+                <h3>Call History</h3>
+                <p>Detailed call logs with duration, status, and contact association</p>
+            </div>
+            <div class="feature">
+                <h3>Contact Integration</h3>
+                <p>Automatic contact matching by phone number</p>
+            </div>
+            <div class="feature">
+                <h3>Recording Sharing</h3>
+                <p>Share call recordings with other users in the system</p>
+            </div>
+            <div class="feature">
+                <h3>Multi-language</h3>
+                <p>Full support for Arabic and English languages</p>
+            </div>
+            <div class="feature">
+                <h3>Clean Code</h3>
+                <p>Built with clean architecture and best practices</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Installation</h2>
+        <ol>
+            <li>Download the module and place it in your Odoo addons directory</li>
+            <li>Update the apps list in Odoo</li>
+            <li>Install the "VoIP WebRTC FreePBX" module</li>
+            <li>Download SIP.js library from <a href="https://github.com/onsip/SIP.js">GitHub</a> and place it in <code>static/lib/sip.js</code></li>
+            <li>Configure your FreePBX server connection</li>
+            <li>Set up VoIP users with their SIP credentials</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Configuration</h2>
+        <h3>VoIP Server Setup</h3>
+        <ol>
+            <li>Go to VoIP → Configuration → VoIP Servers</li>
+            <li>Create a new server with your FreePBX details:
+                <ul>
+                    <li>Server Name: A friendly name for your server</li>
+                    <li>Host: Your FreePBX server hostname or IP</li>
+                    <li>WebSocket URL: WebSocket URL (e.g., wss://your-server:8089/ws)</li>
+                    <li>STUN Server: Google's public STUN server is configured by default</li>
+                </ul>
+            </li>
+            <li>Test the connection</li>
+        </ol>
+
+        <h3>VoIP User Configuration</h3>
+        <ol>
+            <li>Go to VoIP → Configuration → VoIP Users</li>
+            <li>Create a new user configuration:
+                <ul>
+                    <li>Odoo User: Select the user</li>
+                    <li>VoIP Server: Select configured server</li>
+                    <li>SIP Username: Extension number from FreePBX</li>
+                    <li>SIP Password: SIP password from FreePBX</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Usage</h2>
+        <h3>Making Calls</h3>
+        <ol>
+            <li>Click the phone icon in the systray</li>
+            <li>Enter the phone number or use the dialpad</li>
+            <li>Click "Call" to initiate the call</li>
+        </ol>
+
+        <h3>Call History</h3>
+        <p>Access your call history from VoIP → Calls → Call History</p>
+
+        <h3>Call Recordings</h3>
+        <p>View and manage recordings from VoIP → Calls → Recordings</p>
+        <p>Share recordings with other users using the "Share" button</p>
+    </div>
+
+    <div class="section">
+        <h2>Technical Details</h2>
+        <ul>
+            <li><strong>WebRTC Library:</strong> SIP.js (open source)</li>
+            <li><strong>Protocol:</strong> SIP over WebSocket</li>
+            <li><strong>NAT Traversal:</strong> STUN/TURN support</li>
+            <li><strong>Audio Codec:</strong> Opus (WebM)</li>
+            <li><strong>Security:</strong> TLS/WSS encryption support</li>
+        </ul>
+    </div>
+
+    <div class="highlight">
+        <strong>Note:</strong> This module requires a properly configured FreePBX server with WebRTC support enabled.
+        Make sure your FreePBX server has the necessary modules installed and configured for WebSocket connections.
+    </div>
+
+    <div class="section">
+        <h2>Support & Credits</h2>
+        <p><strong>Author:</strong> Mohamed Samir</p>
+        <p><strong>Maintainer:</strong> odoo-vip.com</p>
+        <p><strong>Website:</strong> <a href="https://odoo-vip.com">https://odoo-vip.com</a></p>
+        <p><strong>Version:</strong> 17.0.1.0.0</p>
+        <p><strong>License:</strong> LGPL-3</p>
+    </div>
+</body>
+</html>
