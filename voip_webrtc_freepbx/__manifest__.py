@@ -81,6 +81,7 @@
         'web.assets_backend': [
             ('include', 'web._assets_helpers'),
             'voip_webrtc_freepbx/static/src/js/sip.min.js',
+            'voip_webrtc_freepbx/static/src/js/voip_logging.js',
             'voip_webrtc_freepbx/static/src/js/voip_sip_client.js',
             'voip_webrtc_freepbx/static/src/js/voip_service.js',
             'voip_webrtc_freepbx/static/src/js/voip_systray.js',

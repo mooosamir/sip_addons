@@ -1,5 +1,7 @@
 /** @odoo-module **/
 
+import { voipLogger } from "./voip_logging";
+
 /**
  * VoIP SIP Client using SIP.js
  * 
@@ -34,7 +36,7 @@ export class VoipSipClient {
         
         // Check if SIP.js is loaded
         if (typeof window.SIP === 'undefined') {
-            console.error('SIP.js library not loaded');
+            voipLogger.error('SIP.js library not loaded');
             throw new Error('SIP.js library not loaded. Please check your assets configuration.');
         }
         
@@ -97,7 +99,7 @@ export class VoipSipClient {
             this.ringTone.src = this.createRingTone(audioContext);
             
         } catch (error) {
-            console.warn('Could not generate call tones:', error);
+            voipLogger.warn('Could not generate call tones:', error);
         }
     }
 
@@ -219,8 +221,8 @@ export class VoipSipClient {
      */
     playRingbackTone() {
         this.stopAllTones();
-        console.log('🔊 Playing ringback tone');
-        this.ringbackTone.play().catch(e => console.warn('Could not play ringback tone:', e));
+        voipLogger.audio('Playing ringback tone');
+        this.ringbackTone.play().catch(e => voipLogger.warn('Could not play ringback tone:', e));
     }
 
     /**
@@ -228,8 +230,8 @@ export class VoipSipClient {
      */
     playBusyTone() {
         this.stopAllTones();
-        console.log('🔊 Playing busy tone');
-        this.busyTone.play().catch(e => console.warn('Could not play busy tone:', e));
+        voipLogger.audio('Playing busy tone');
+        this.busyTone.play().catch(e => voipLogger.warn('Could not play busy tone:', e));
     }
 
     /**
@@ -237,8 +239,8 @@ export class VoipSipClient {
      */
     playRingTone() {
         this.stopAllTones();
-        console.log('🔊 Playing ring tone');
-        this.ringTone.play().catch(e => console.warn('Could not play ring tone:', e));
+        voipLogger.audio('Playing ring tone');
+        this.ringTone.play().catch(e => voipLogger.warn('Could not play ring tone:', e));
     }
 
     /**
@@ -262,8 +264,8 @@ export class VoipSipClient {
      */
     async initialize() {
         try {
-            console.log('🔧 VoIP SIP Client Debug: Initializing...');
-            console.log('Initializing VoIP SIP client with SIP.js...');
+            voipLogger.debug('Initializing...');
+            voipLogger.info('Initializing VoIP SIP client with SIP.js...');
             
             // Check WebRTC support
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -285,9 +287,9 @@ export class VoipSipClient {
             // Build SIP URI
             const sipUri = `sip:${this.config.user.username}@${this.config.server.realm || this.config.server.host}`;
 
-            console.log('🔌 Connecting to:', wsUri);
-            console.log('📞 SIP URI:', sipUri);
-            console.log('🔒 TLS:', this.config.server.use_tls ? 'Enabled' : 'Disabled');
+            voipLogger.connection('Connecting to:', wsUri);
+            voipLogger.call('SIP URI:', sipUri);
+            voipLogger.connection('TLS:', this.config.server.use_tls ? 'Enabled' : 'Disabled');
 
             // Configure ICE servers (STUN/TURN)
             const iceServers = this.getIceServers();
@@ -332,17 +334,17 @@ export class VoipSipClient {
 
             // Setup transport event handlers
             this.userAgent.transport.onConnect = () => {
-                console.log('✅ Connected to WebSocket server');
-                console.log('🔧 VoIP SIP Client Debug: Transport connected');
+                voipLogger.success('Connected to WebSocket server');
+                voipLogger.debug('Transport connected');
                 this.onTransportConnected();
             };
 
             this.userAgent.transport.onDisconnect = (error) => {
                 if (error) {
-                    console.error('❌ WebSocket connection error:', error);
+                    voipLogger.error('WebSocket connection error:', error);
                     this.onTransportError(error);
                 } else {
-                    console.log('WebSocket disconnected');
+                    voipLogger.connection('WebSocket disconnected');
                     this.onTransportDisconnected();
                 }
             };

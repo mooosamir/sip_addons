@@ -32,6 +32,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import logging
+from ..utils.logging_utils import VoipLoggingUtils
 
 _logger = logging.getLogger(__name__)
 
@@ -158,6 +159,15 @@ class VoipServer(models.Model):
     notes = fields.Text(
         string='Notes'
     )
+    
+    logging_mode = fields.Selection(
+        [('production', 'Production'), ('test', 'Test')],
+        string='Logging Mode',
+        default='production',
+        required=True,
+        tracking=True,
+        help='Production: Enable all logging. Test: Disable all logging for testing purposes.'
+    )
 
     @api.depends('user_ids')
     def _compute_user_count(self):
@@ -179,6 +189,9 @@ class VoipServer(models.Model):
 
     def action_test_connection(self):
         self.ensure_one()
+        # Log connection test based on logging mode
+        self.log_if_enabled('info', 'Connection test initiated for server: %s', self.name)
+        
         # This method can be extended to test the connection to FreePBX
         return {
             'type': 'ir.actions.client',
@@ -211,3 +224,18 @@ class VoipServer(models.Model):
             'view_mode': 'tree,form',
             'domain': [('server_id', '=', self.id)],
         }
+    
+    def get_logging_config(self):
+        """Get logging configuration for this server"""
+        self.ensure_one()
+        return VoipLoggingUtils.get_js_logging_config(self.env, self.id)
+    
+    def should_log(self, level='info'):
+        """Check if logging should be enabled for this server"""
+        self.ensure_one()
+        return VoipLoggingUtils.should_log(self.env, self.id, level)
+    
+    def log_if_enabled(self, level, message, *args, **kwargs):
+        """Log a message only if logging is enabled for this server"""
+        self.ensure_one()
+        VoipLoggingUtils.log_if_enabled(self.env, _logger, level, message, self.id, *args, **kwargs)
