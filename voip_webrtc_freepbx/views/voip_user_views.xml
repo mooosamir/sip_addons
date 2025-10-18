@@ -22,7 +22,7 @@
                                 <field name="total_call_duration" widget="statinfo" string="Hours"/>
                             </button>
                         </div>
-                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active == True"/>
                         <group>
                             <group name="user_info" string="User Information">
                                 <field name="user_id"/>
@@ -43,6 +43,14 @@
                             </group>
                             <group name="stats" string="Statistics">
                                 <field name="last_login" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group name="recording_settings" string="Recording Settings">
+                                <field name="auto_start_recording"/>
+                                <field name="can_control_recording"/>
+                                <field name="recording_quality"/>
+                                <field name="recording_format"/>
                             </group>
                         </group>
                         <notebook>

@@ -1,215 +1,1110 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoIP WebRTC FreePBX - Odoo 17</title>
+    <meta charset="UTF-8">
+    <title>VoIP WebRTC FreePBX - Professional Phone System for Odoo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            padding: 40px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        .header h1 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            font-size: 2.5em;
+            padding: 0;
         }
-        .header p {
-            font-size: 1.2em;
-            margin: 10px 0 0 0;
-        }
-        .section {
-            margin: 30px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        .section h2 {
-            color: #667eea;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-        }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        .feature {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .feature i {
-            font-size: 2em;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        .feature h3 {
-            margin: 10px 0;
-            color: #333;
-        }
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        .highlight {
-            background: #fff3cd;
-            padding: 15px;
-            border-left: 4px solid #ffc107;
-            margin: 20px 0;
+        .gradient-text {
+            background: linear-gradient(135deg, #a8498f 0%, #7d3a75 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>VoIP WebRTC FreePBX</h1>
-        <p>Full-featured VoIP and WebRTC integration for Odoo 17</p>
-    </div>
 
-    <div class="section">
-        <h2>Overview</h2>
-        <p>
-            This module provides comprehensive VoIP functionality for Odoo 17 Community Edition,
-            enabling seamless integration with FreePBX servers using WebRTC technology.
-            Make and receive calls directly from your Odoo interface with full call management capabilities.
-        </p>
+<!-- Hero Section -->
+<div class="sh_center text-center" style="background: linear-gradient(135deg, #a8498f 0%, #7d3a75 100%); color: white; padding: 80px 20px;">
+    <div class="row align-items-center" style="max-width: 1200px; margin: 0 auto;">
+       <div class="col-lg-4 col-md-4 col-sm-12" style="text-align:left">
+            <img src="icon.png" alt="VoIP WebRTC Logo" style="width:100%; max-width: 280px; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));">
+       </div>
+       <div class="col-lg-8 col-md-8 col-sm-12" style="text-align:right">
+            <h1 style="font-size: 42px; font-weight: 700; margin-bottom: 20px;">VoIP WebRTC FreePBX</h1>
+            <p style="font-size: 22px; margin-bottom: 30px; opacity: 0.95;">Transform Odoo into a Professional Phone System</p>
+            <div style="display: inline-flex; gap: 15px; flex-wrap: wrap; justify-content: flex-end;">
+                <span class="btn btn-light" style="border: 2px solid white; padding: 12px 25px; font-size: 16px; font-weight: 600; border-radius: 25px; background-color: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px);">
+                    <i class="fa fa-check" style="margin-right: 8px;"></i>Odoo 17
+                </span>
+                <span class="btn btn-light" style="border: 2px solid white; padding: 12px 25px; font-size: 16px; font-weight: 600; border-radius: 25px; background-color: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px);">
+                    <i class="fa fa-check" style="margin-right: 8px;"></i>WebRTC
+                </span>
+                <span class="btn btn-light" style="border: 2px solid white; padding: 12px 25px; font-size: 16px; font-weight: 600; border-radius: 25px; background-color: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px);">
+                    <i class="fa fa-check" style="margin-right: 8px;"></i>FreePBX/Asterisk
+                </span>
+            </div>
+       </div>
     </div>
+ </div>
 
-    <div class="section">
-        <h2>Key Features</h2>
-        <div class="features">
-            <div class="feature">
-                <h3>WebRTC Calling</h3>
-                <p>Browser-based calling without plugins using modern WebRTC technology</p>
+<br/><br/>
+
+<!-- Main Screenshot -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <img class="img-responsive rounded shadow" src="screenshot_main.png" style="width:100%; max-width: 1200px; border-radius: 15px; box-shadow: 0 15px 50px rgba(168, 73, 143, 0.3);">
+    <h3 style="text-align: center; color: #a8498f; margin-top: 25px; font-size: 26px; font-weight: 600;">Beautiful VoIP Dialer Interface</h3>
+    <p style="text-align: center; color: #666; font-size: 18px; margin-bottom: 50px;">Make and receive calls directly from your Odoo interface with a stunning, modern design</p>
+</div>
+
+<br/><br/>
+
+<!-- Key Features Section -->
+<section class="oe_container">
+    <div class="col-md-12">
+        <h2 class="oe_slogan" style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span class="gradient-text"><b>Powerful Features</b></span>
+        </h2>
+        
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(168, 73, 143, 0.1) 0%, rgba(125, 58, 117, 0.05) 100%); padding: 40px 25px; border-radius: 20px; height: 100%; border: 2px solid rgba(168, 73, 143, 0.2);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #a8498f, #7d3a75); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(168, 73, 143, 0.3);">
+                        <i class="fa fa-phone" style="font-size: 35px; color: white;"></i>
+                    </div>
+                    <h3 style="color: #a8498f; font-size: 22px; margin-bottom: 15px; font-weight: 600;">WebRTC Integration</h3>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8;">
+                        Make and receive calls directly from your browser using cutting-edge WebRTC technology. No plugins or downloads required - just pure browser-based calling.
+                    </p>
+                </div>
             </div>
-            <div class="feature">
-                <h3>FreePBX Integration</h3>
-                <p>Direct connection to your FreePBX server via SIP/WebSocket</p>
+            
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(56, 161, 105, 0.05) 100%); padding: 40px 25px; border-radius: 20px; height: 100%; border: 2px solid rgba(72, 187, 120, 0.2);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #48bb78, #38a169); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(72, 187, 120, 0.3);">
+                        <i class="fa fa-microphone" style="font-size: 35px; color: white;"></i>
+                    </div>
+                    <h3 style="color: #38a169; font-size: 22px; margin-bottom: 15px; font-weight: 600;">Call Recording</h3>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8;">
+                        Automatic call recording with customizable settings. All recordings are securely stored in Odoo with built-in audio player for easy playback and review.
+                    </p>
+                </div>
             </div>
-            <div class="feature">
-                <h3>Call Recording</h3>
-                <p>Automatic call recording with playback and download capabilities</p>
+            
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%); padding: 40px 25px; border-radius: 20px; height: 100%; border: 2px solid rgba(102, 126, 234, 0.2);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);">
+                        <i class="fa fa-users" style="font-size: 35px; color: white;"></i>
+                    </div>
+                    <h3 style="color: #667eea; font-size: 22px; margin-bottom: 15px; font-weight: 600;">Contact Integration</h3>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8;">
+                        Seamlessly integrated with Odoo contacts. Quick access to customer information, call history, and one-click dialing from contact records.
+                    </p>
+                </div>
             </div>
-            <div class="feature">
-                <h3>Call History</h3>
-                <p>Detailed call logs with duration, status, and contact association</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(192, 57, 43, 0.05) 100%); padding: 40px 25px; border-radius: 20px; height: 100%; border: 2px solid rgba(231, 76, 60, 0.2);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #e74c3c, #c0392b); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);">
+                        <i class="fa fa-history" style="font-size: 35px; color: white;"></i>
+                    </div>
+                    <h3 style="color: #e74c3c; font-size: 22px; margin-bottom: 15px; font-weight: 600;">Call History</h3>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8;">
+                        Complete call history with detailed information including duration, status, recordings, and caller identification. Export reports for analysis.
+                    </p>
+                </div>
             </div>
-            <div class="feature">
-                <h3>Contact Integration</h3>
-                <p>Automatic contact matching by phone number</p>
+            
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(41, 128, 185, 0.05) 100%); padding: 40px 25px; border-radius: 20px; height: 100%; border: 2px solid rgba(52, 152, 219, 0.2);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #3498db, #2980b9); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);">
+                        <i class="fa fa-tablet-alt" style="font-size: 35px; color: white;"></i>
+                    </div>
+                    <h3 style="color: #3498db; font-size: 22px; margin-bottom: 15px; font-weight: 600;">Modern UI/UX</h3>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8;">
+                        Beautiful gradient design with smooth animations, wave effects, and intuitive controls. Fully responsive and draggable interface.
+                    </p>
+                </div>
             </div>
-            <div class="feature">
-                <h3>Recording Sharing</h3>
-                <p>Share call recordings with other users in the system</p>
-            </div>
-            <div class="feature">
-                <h3>Multi-language</h3>
-                <p>Full support for Arabic and English languages</p>
-            </div>
-            <div class="feature">
-                <h3>Clean Code</h3>
-                <p>Built with clean architecture and best practices</p>
+            
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(241, 196, 15, 0.1) 0%, rgba(243, 156, 18, 0.05) 100%); padding: 40px 25px; border-radius: 20px; height: 100%; border: 2px solid rgba(241, 196, 15, 0.2);">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f1c40f, #f39c12); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(241, 196, 15, 0.3);">
+                        <i class="fa fa-shield-alt" style="font-size: 35px; color: white;"></i>
+                    </div>
+                    <h3 style="color: #f39c12; font-size: 22px; margin-bottom: 15px; font-weight: 600;">Secure & Reliable</h3>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8;">
+                        TLS/SRTP encryption for secure communications. Built on industry-standard SIP.js library with robust error handling and automatic reconnection.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
+</section>
 
-    <div class="section">
-        <h2>Installation</h2>
-        <ol>
-            <li>Download the module and place it in your Odoo addons directory</li>
-            <li>Update the apps list in Odoo</li>
-            <li>Install the "VoIP WebRTC FreePBX" module</li>
-            <li>Download SIP.js library from <a href="https://github.com/onsip/SIP.js">GitHub</a> and place it in <code>static/lib/sip.js</code></li>
-            <li>Configure your FreePBX server connection</li>
-            <li>Set up VoIP users with their SIP credentials</li>
-        </ol>
+<br/><br/>
+
+<!-- Screenshot Placeholder 1 - Dialer Interface -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 60px 40px; border-radius: 20px; margin: 0 auto; max-width: 1200px;">
+        <img class="img-responsive rounded shadow" src="screenshot_dialer.png" style="width:100%; border-radius: 15px; box-shadow: 0 15px 50px rgba(0,0,0,0.2);">
     </div>
+    <h3 style="color: #a8498f; margin-top: 30px; font-size: 26px; font-weight: 600;">Elegant Dialer with Tabbed Navigation</h3>
+    <p style="color: #666; font-size: 18px; max-width: 800px; margin: 15px auto 50px;">Three intuitive tabs: Dialer for making calls, History for call records, and Contacts for quick access to your customer database</p>
+</div>
 
-    <div class="section">
-        <h2>Configuration</h2>
-        <h3>VoIP Server Setup</h3>
-        <ol>
-            <li>Go to VoIP → Configuration → VoIP Servers</li>
-            <li>Create a new server with your FreePBX details:
-                <ul>
-                    <li>Server Name: A friendly name for your server</li>
-                    <li>Host: Your FreePBX server hostname or IP</li>
-                    <li>WebSocket URL: WebSocket URL (e.g., wss://your-server:8089/ws)</li>
-                    <li>STUN Server: Google's public STUN server is configured by default</li>
+<br/><br/>
+
+<!-- Advanced Features -->
+<section class="oe_container oe_dark">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span class="gradient-text"><b>Advanced Capabilities</b></span>
+        </h2>
+        
+        <div class="row" style="margin-bottom: 30px;">
+            <div class="col-md-6">
+                <div style="padding: 30px; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 25px; border-left: 5px solid #a8498f;">
+                    <h4 style="color: #a8498f; font-size: 22px; margin-bottom: 15px;">
+                        <i class="fa fa-phone-volume" style="margin-right: 12px;"></i>Smart Call Tones
+                    </h4>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8; margin: 0;">
+                        Professional audio feedback with ringback tones during outbound calls, busy tones for unavailable numbers, and customizable ring tones for incoming calls. All generated dynamically using Web Audio API.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div style="padding: 30px; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 25px; border-left: 5px solid #48bb78;">
+                    <h4 style="color: #48bb78; font-size: 22px; margin-bottom: 15px;">
+                        <i class="fa fa-sliders-h" style="margin-right: 12px;"></i>Real-Time Call Controls
+                    </h4>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8; margin: 0;">
+                        Full control during calls with mute/unmute microphone, speaker toggle, manual recording start/stop, and instant hang-up. All controls are visually indicated with color changes and animations.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div style="padding: 30px; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 25px; border-left: 5px solid #667eea;">
+                    <h4 style="color: #667eea; font-size: 22px; margin-bottom: 15px;">
+                        <i class="fa fa-rocket" style="margin-right: 12px;"></i>Optimized Performance
+                    </h4>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8; margin: 0;">
+                        Lightning-fast call initiation with ICE gathering optimization (500ms instead of 5000ms). Parallel Odoo record creation ensures the UI responds instantly while background processes complete asynchronously.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div style="padding: 30px; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 25px; border-left: 5px solid #e74c3c;">
+                    <h4 style="color: #e74c3c; font-size: 22px; margin-bottom: 15px;">
+                        <i class="fa fa-language" style="margin-right: 12px;"></i>Multi-Language Support
+                    </h4>
+                    <p style="font-size: 16px; color: #666; line-height: 1.8; margin: 0;">
+                        Full internationalization support with English and Arabic translations. All UI elements, notifications, and system messages are properly localized for a native experience.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Screenshot Placeholder 2 - Active Call -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <div style="background: linear-gradient(135deg, #a8498f 10%, #7d3a75 100%); padding: 60px 40px; border-radius: 20px; margin: 0 auto; max-width: 1200px;">
+        <img class="img-responsive rounded shadow" src="screenshot_active_call.png" style="width:100%; border-radius: 15px; box-shadow: 0 15px 50px rgba(0,0,0,0.5);">
+    </div>
+    <h3 style="color: #a8498f; margin-top: 30px; font-size: 26px; font-weight: 600;">Beautiful Active Call Screen</h3>
+    <p style="color: #666; font-size: 18px; max-width: 800px; margin: 15px auto 50px;">Stunning gradient background with wave animations, avatar display, and professional call controls</p>
+</div>
+
+<br/><br/>
+
+<!-- User Interface Features -->
+<section class="oe_container">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span class="gradient-text"><b>Stunning User Interface</b></span>
+        </h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h3 style="color: #a8498f; font-size: 24px; margin-bottom: 20px;">
+                    <i class="fa fa-tablet-alt" style="margin-right: 12px;"></i>Three Tabbed Interface
+                </h3>
+                <ul style="font-size: 17px; color: #666; line-height: 2.2;">
+                    <li><strong style="color: #a8498f;">Dialer Tab:</strong> Numeric keypad with smart input field, backspace, and call button</li>
+                    <li><strong style="color: #48bb78;">History Tab:</strong> Recent calls with color-coded icons (incoming/outgoing), duration display, and quick redial</li>
+                    <li><strong style="color: #667eea;">Contacts Tab:</strong> Searchable contact list with avatars and instant call buttons</li>
                 </ul>
-            </li>
-            <li>Test the connection</li>
-        </ol>
-
-        <h3>VoIP User Configuration</h3>
-        <ol>
-            <li>Go to VoIP → Configuration → VoIP Users</li>
-            <li>Create a new user configuration:
-                <ul>
-                    <li>Odoo User: Select the user</li>
-                    <li>VoIP Server: Select configured server</li>
-                    <li>SIP Username: Extension number from FreePBX</li>
-                    <li>SIP Password: SIP password from FreePBX</li>
+            </div>
+            
+            <div class="col-md-6">
+                <h3 style="color: #48bb78; font-size: 24px; margin-bottom: 20px;">
+                    <i class="fa fa-magic" style="margin-right: 12px;"></i>Visual Excellence
+                </h3>
+                <ul style="font-size: 17px; color: #666; line-height: 2.2;">
+                    <li><strong style="color: #a8498f;">Gradient Backgrounds:</strong> Professional purple gradients throughout the interface</li>
+                    <li><strong style="color: #48bb78;">Wave Animations:</strong> Dynamic wave effects during active calls</li>
+                    <li><strong style="color: #667eea;">Smooth Transitions:</strong> All actions animated with carefully crafted timing</li>
                 </ul>
-            </li>
-        </ol>
+            </div>
+        </div>
     </div>
+</section>
 
-    <div class="section">
-        <h2>Usage</h2>
-        <h3>Making Calls</h3>
-        <ol>
-            <li>Click the phone icon in the systray</li>
-            <li>Enter the phone number or use the dialpad</li>
-            <li>Click "Call" to initiate the call</li>
-        </ol>
+<br/><br/>
 
-        <h3>Call History</h3>
-        <p>Access your call history from VoIP → Calls → Call History</p>
+<!-- Screenshot Placeholder 3 - Call History -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <img class="img-responsive rounded shadow" src="screenshot_history.png" style="width:100%; max-width: 1200px; border-radius: 15px; box-shadow: 0 15px 50px rgba(168, 73, 143, 0.3);">
+    <h3 style="color: #a8498f; margin-top: 25px; font-size: 26px; font-weight: 600;">Comprehensive Call History</h3>
+    <p style="color: #666; font-size: 18px; margin-bottom: 50px;">Track all incoming and outgoing calls with detailed information and recordings</p>
+</div>
 
-        <h3>Call Recordings</h3>
-        <p>View and manage recordings from VoIP → Calls → Recordings</p>
-        <p>Share recordings with other users using the "Share" button</p>
+<br/><br/>
+
+<!-- Recording Features -->
+<section class="oe_container oe_dark">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span style="color: #2C0091;"><b>Professional Call Recording</b></span>
+        </h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 35px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 25px;">
+                    <h4 style="color: #a8498f; font-size: 22px; margin-bottom: 20px;">
+                        <i class="fa fa-cog" style="margin-right: 10px;"></i>Configurable Settings
+                    </h4>
+                    <ul style="font-size: 16px; color: #666; line-height: 2;">
+                        <li><i class="fa fa-check" style="color: #48bb78; margin-right: 8px;"></i>Auto-start recording on call connection</li>
+                        <li><i class="fa fa-check" style="color: #48bb78; margin-right: 8px;"></i>Manual control permissions per user</li>
+                        <li><i class="fa fa-check" style="color: #48bb78; margin-right: 8px;"></i>Recording quality settings (Low/Medium/High)</li>
+                        <li><i class="fa fa-check" style="color: #48bb78; margin-right: 8px;"></i>Multiple format support (WebM/MP4/WAV)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 35px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 25px;">
+                    <h4 style="color: #667eea; font-size: 22px; margin-bottom: 20px;">
+                        <i class="fa fa-play-circle" style="margin-right: 10px;"></i>Integrated Audio Player
+                    </h4>
+                    <ul style="font-size: 16px; color: #666; line-height: 2;">
+                        <li><i class="fa fa-check" style="color: #48bb78; margin-right: 8px;"></i>Built-in audio player widget in recording forms</li>
+                        <li><i class="fa fa-check" style="color: #48bb78; margin-right: 8px;"></i>Beautiful gradient player with controls</li>
+                        <li><i class="fa fa-check" style="color: #48bb78; margin-right: 8px;"></i>Support for multiple audio formats</li>
+                        <li><i class="fa fa-check" style="color: #48bb78; margin-right: 8px;"></i>Direct playback without downloads</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
 
-    <div class="section">
-        <h2>Technical Details</h2>
-        <ul>
-            <li><strong>WebRTC Library:</strong> SIP.js (open source)</li>
-            <li><strong>Protocol:</strong> SIP over WebSocket</li>
-            <li><strong>NAT Traversal:</strong> STUN/TURN support</li>
-            <li><strong>Audio Codec:</strong> Opus (WebM)</li>
-            <li><strong>Security:</strong> TLS/WSS encryption support</li>
-        </ul>
-    </div>
+<br/><br/>
 
-    <div class="highlight">
-        <strong>Note:</strong> This module requires a properly configured FreePBX server with WebRTC support enabled.
-        Make sure your FreePBX server has the necessary modules installed and configured for WebSocket connections.
-    </div>
+<!-- Screenshot Placeholder 4 - Recording Form -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <img class="img-responsive rounded shadow" src="screenshot_recording.png" style="width:100%; max-width: 1200px; border-radius: 15px; box-shadow: 0 15px 50px rgba(168, 73, 143, 0.3);">
+    <h3 style="color: #a8498f; margin-top: 25px; font-size: 26px; font-weight: 600;">Call Recording Management</h3>
+    <p style="color: #666; font-size: 18px; margin-bottom: 50px;">View, play, and manage all call recordings with integrated audio player</p>
+</div>
 
-    <div class="section">
-        <h2>Support & Credits</h2>
-        <p><strong>Author:</strong> Mohamed Samir</p>
-        <p><strong>Maintainer:</strong> odoo-vip.com</p>
-        <p><strong>Website:</strong> <a href="https://odoo-vip.com">https://odoo-vip.com</a></p>
-        <p><strong>Version:</strong> 17.0.1.0.0</p>
-        <p><strong>License:</strong> LGPL-3</p>
+<br/><br/>
+
+<!-- Technical Features -->
+<section class="oe_container">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span class="gradient-text"><b>Technical Excellence</b></span>
+        </h2>
+        
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px; border-radius: 20px; color: white;">
+            <div class="row">
+                <div class="col-md-4 text-center" style="margin-bottom: 30px;">
+                    <div style="background: rgba(255, 255, 255, 0.15); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px); height: 100%;">
+                        <i class="fa fa-code" style="font-size: 50px; margin-bottom: 20px;"></i>
+                        <h4 style="margin-bottom: 15px; font-size: 20px;">Clean Architecture</h4>
+                        <p style="font-size: 15px; opacity: 0.9; line-height: 1.6;">
+                            Separation of concerns with dedicated models, controllers, services, and components. Following SOLID principles for maintainability.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 text-center" style="margin-bottom: 30px;">
+                    <div style="background: rgba(255, 255, 255, 0.15); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px); height: 100%;">
+                        <i class="fa fa-bolt" style="font-size: 50px; margin-bottom: 20px;"></i>
+                        <h4 style="margin-bottom: 15px; font-size: 20px;">WebRTC Powered</h4>
+                        <p style="font-size: 15px; opacity: 0.9; line-height: 1.6;">
+                            Built on SIP.js 0.20.0 with optimized ICE gathering, STUN/TURN support, and automatic media stream handling for crystal-clear audio quality.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 text-center" style="margin-bottom: 30px;">
+                    <div style="background: rgba(255, 255, 255, 0.15); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px); height: 100%;">
+                        <i class="fa fa-database" style="font-size: 50px; margin-bottom: 20px;"></i>
+                        <h4 style="margin-bottom: 15px; font-size: 20px;">Complete Data Model</h4>
+                        <p style="font-size: 15px; opacity: 0.9; line-height: 1.6;">
+                            Comprehensive data models for servers, users, calls, and recordings. Full integration with Odoo's chatter, activities, and followers system.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+
+<br/><br/>
+
+<!-- Screenshot Placeholder 5 - Settings -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 60px 40px; border-radius: 20px; margin: 0 auto; max-width: 1200px;">
+        <img class="img-responsive rounded shadow" src="screenshot_settings.png" style="width:100%; border-radius: 15px; box-shadow: 0 15px 50px rgba(0,0,0,0.2);">
+    </div>
+    <h3 style="color: #a8498f; margin-top: 30px; font-size: 26px; font-weight: 600;">Comprehensive User Settings</h3>
+    <p style="color: #666; font-size: 18px; max-width: 800px; margin: 15px auto 50px;">Configure SIP credentials, recording preferences, auto-answer, and more per user</p>
+</div>
+
+<br/><br/>
+
+<!-- Installation & Setup -->
+<section class="oe_container oe_dark">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px; color: #2C0091;">
+            <b>Easy Installation & Setup</b>
+        </h2>
+        
+        <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 50px 40px; border-radius: 20px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 style="color: #2C0091; font-size: 24px; margin-bottom: 25px;">
+                        <i class="fa fa-download" style="margin-right: 12px;"></i>Installation
+                    </h4>
+                    <ol style="font-size: 17px; color: #333; line-height: 2.2;">
+                        <li>Download and extract the module to your addons directory</li>
+                        <li>Restart Odoo server</li>
+                        <li>Update Apps List</li>
+                        <li>Install "VoIP WebRTC FreePBX"</li>
+                        <li>Configure your FreePBX server connection</li>
+                    </ol>
+                </div>
+                
+                <div class="col-md-6">
+                    <h4 style="color: #2C0091; font-size: 24px; margin-bottom: 25px;">
+                        <i class="fa fa-cogs" style="margin-right: 12px;"></i>Configuration
+                    </h4>
+                    <ol style="font-size: 17px; color: #333; line-height: 2.2;">
+                        <li>Navigate to VoIP → Servers</li>
+                        <li>Create new VoIP Server with your FreePBX details</li>
+                        <li>Add VoIP Users with SIP credentials</li>
+                        <li>Configure recording and auto-answer settings</li>
+                        <li>Start making calls from the systray icon!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Screenshot Placeholder 6 - Incoming Call -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <div style="background: linear-gradient(135deg, #a8498f 10%, #7d3a75 100%); padding: 60px 40px; border-radius: 20px; margin: 0 auto; max-width: 1200px;">
+        <img class="img-responsive rounded shadow" src="screenshot_incoming.png" style="width:100%; border-radius: 15px; box-shadow: 0 15px 50px rgba(0,0,0,0.5);">
+    </div>
+    <h3 style="color: #a8498f; margin-top: 30px; font-size: 26px; font-weight: 600;">Incoming Call Screen</h3>
+    <p style="color: #666; font-size: 18px; max-width: 800px; margin: 15px auto 50px;">Beautiful incoming call notification with pulsing avatar, ring animation, and prominent answer/decline buttons</p>
+</div>
+
+<br/><br/>
+
+<!-- Feature Highlights -->
+<section class="oe_container">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span class="gradient-text"><b>Complete Feature Set</b></span>
+        </h2>
+        
+        <div class="row" style="margin-bottom: 30px;">
+            <div class="col-md-3 text-center">
+                <div style="padding: 25px; border-radius: 15px; background: #f8f9fa; margin-bottom: 20px;">
+                    <i class="fa fa-phone-alt" style="font-size: 40px; color: #a8498f; margin-bottom: 15px;"></i>
+                    <h5 style="color: #333; font-weight: 600; margin-bottom: 10px;">Outbound Calls</h5>
+                    <p style="font-size: 14px; color: #666;">Make calls with numeric keypad or contact list</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="padding: 25px; border-radius: 15px; background: #f8f9fa; margin-bottom: 20px;">
+                    <i class="fa fa-phone-volume" style="font-size: 40px; color: #48bb78; margin-bottom: 15px;"></i>
+                    <h5 style="color: #333; font-weight: 600; margin-bottom: 10px;">Inbound Calls</h5>
+                    <p style="font-size: 14px; color: #666;">Receive calls with visual and audio notifications</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="padding: 25px; border-radius: 15px; background: #f8f9fa; margin-bottom: 20px;">
+                    <i class="fa fa-microphone" style="font-size: 40px; color: #667eea; margin-bottom: 15px;"></i>
+                    <h5 style="color: #333; font-weight: 600; margin-bottom: 10px;">Mute Control</h5>
+                    <p style="font-size: 14px; color: #666;">Toggle microphone with visual feedback</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="padding: 25px; border-radius: 15px; background: #f8f9fa; margin-bottom: 20px;">
+                    <i class="fa fa-record-vinyl" style="font-size: 40px; color: #e74c3c; margin-bottom: 15px;"></i>
+                    <h5 style="color: #333; font-weight: 600; margin-bottom: 10px;">Live Recording</h5>
+                    <p style="font-size: 14px; color: #666;">Record calls with real-time indicator</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div style="padding: 25px; border-radius: 15px; background: #f8f9fa; margin-bottom: 20px;">
+                    <i class="fa fa-user-circle" style="font-size: 40px; color: #f39c12; margin-bottom: 15px;"></i>
+                    <h5 style="color: #333; font-weight: 600; margin-bottom: 10px;">Caller ID</h5>
+                    <p style="font-size: 14px; color: #666;">Display name and number for all calls</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="padding: 25px; border-radius: 15px; background: #f8f9fa; margin-bottom: 20px;">
+                    <i class="fa fa-search" style="font-size: 40px; color: #3498db; margin-bottom: 15px;"></i>
+                    <h5 style="color: #333; font-weight: 600; margin-bottom: 10px;">Contact Search</h5>
+                    <p style="font-size: 14px; color: #666;">Quick search through all contacts</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="padding: 25px; border-radius: 15px; background: #f8f9fa; margin-bottom: 20px;">
+                    <i class="fa fa-arrows-alt" style="font-size: 40px; color: #9b59b6; margin-bottom: 15px;"></i>
+                    <h5 style="color: #333; font-weight: 600; margin-bottom: 10px;">Drag & Drop</h5>
+                    <p style="font-size: 14px; color: #666;">Reposition dialer anywhere on screen</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="padding: 25px; border-radius: 15px; background: #f8f9fa; margin-bottom: 20px;">
+                    <i class="fa fa-clock" style="font-size: 40px; color: #16a085; margin-bottom: 15px;"></i>
+                    <h5 style="color: #333; font-weight: 600; margin-bottom: 10px;">Call Timer</h5>
+                    <p style="font-size: 14px; color: #666;">Real-time duration display during calls</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Screenshot Placeholder 7 - Server Settings -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <img class="img-responsive rounded shadow" src="screenshot_server.png" style="width:100%; max-width: 1200px; border-radius: 15px; box-shadow: 0 15px 50px rgba(168, 73, 143, 0.3);">
+    <h3 style="color: #a8498f; margin-top: 25px; font-size: 26px; font-weight: 600;">VoIP Server Configuration</h3>
+    <p style="color: #666; font-size: 18px; margin-bottom: 50px;">Easy FreePBX/Asterisk server setup with WebSocket, STUN/TURN, and TLS configuration</p>
+</div>
+
+<br/><br/>
+
+<!-- Benefits Section -->
+<section class="oe_container oe_dark">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px; color: #2C0091;">
+            <b>Why Choose Our VoIP Module?</b>
+        </h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; align-items: start; gap: 20px;">
+                        <div style="min-width: 60px; height: 60px; background: linear-gradient(135deg, #48bb78, #38a169); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-dollar-sign" style="font-size: 28px; color: white;"></i>
+                        </div>
+                        <div>
+                            <h4 style="color: #48bb78; font-size: 20px; margin-bottom: 10px; font-weight: 600;">Cost Effective</h4>
+                            <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                                No expensive hardware or phone systems needed. Use your existing FreePBX/Asterisk server with browser-based calling. Reduce telephony costs significantly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; align-items: start; gap: 20px;">
+                        <div style="min-width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-users-cog" style="font-size: 28px; color: white;"></i>
+                        </div>
+                        <div>
+                            <h4 style="color: #667eea; font-size: 20px; margin-bottom: 10px; font-weight: 600;">User Management</h4>
+                            <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                                Individual SIP accounts per Odoo user with granular permissions for recording, auto-answer, and call controls. Perfect for multi-user environments.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; align-items: start; gap: 20px;">
+                        <div style="min-width: 60px; height: 60px; background: linear-gradient(135deg, #e74c3c, #c0392b); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-chart-line" style="font-size: 28px; color: white;"></i>
+                        </div>
+                        <div>
+                            <h4 style="color: #e74c3c; font-size: 20px; margin-bottom: 10px; font-weight: 600;">Analytics Ready</h4>
+                            <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                                Track call metrics, duration, success rates, and more. All data stored in Odoo models for easy reporting and analysis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; align-items: start; gap: 20px;">
+                        <div style="min-width: 60px; height: 60px; background: linear-gradient(135deg, #a8498f, #7d3a75); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-paint-brush" style="font-size: 28px; color: white;"></i>
+                        </div>
+                        <div>
+                            <h4 style="color: #a8498f; font-size: 20px; margin-bottom: 10px; font-weight: 600;">Modern Design</h4>
+                            <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                                Beautiful gradient UI with smooth animations, wave effects, and professional styling. Responsive design works perfectly on all screen sizes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; align-items: start; gap: 20px;">
+                        <div style="min-width: 60px; height: 60px; background: linear-gradient(135deg, #f39c12, #e67e22); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-shield-alt" style="font-size: 28px; color: white;"></i>
+                        </div>
+                        <div>
+                            <h4 style="color: #f39c12; font-size: 20px; margin-bottom: 10px; font-weight: 600;">Enterprise Security</h4>
+                            <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                                TLS encryption for WebSocket connections, SRTP for media, and secure credential storage. HTTPS required for maximum security.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; align-items: start; gap: 20px;">
+                        <div style="min-width: 60px; height: 60px; background: linear-gradient(135deg, #3498db, #2980b9); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-sync-alt" style="font-size: 28px; color: white;"></i>
+                        </div>
+                        <div>
+                            <h4 style="color: #3498db; font-size: 20px; margin-bottom: 10px; font-weight: 600;">Auto Reconnect</h4>
+                            <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                                Automatic reconnection on network issues with keep-alive mechanism. Reliable connection maintenance for uninterrupted service.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Technical Specifications -->
+<section class="oe_container oe_dark">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px; color: #2C0091;">
+            <b>Technical Specifications</b>
+        </h2>
+        
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div style="background: linear-gradient(135deg, #a8498f 0%, #7d3a75 100%); padding: 35px 25px; border-radius: 15px; color: white; height: 100%; box-shadow: 0 8px 25px rgba(168, 73, 143, 0.3);">
+                    <h4 style="margin-bottom: 15px; font-size: 18px;">Odoo Version</h4>
+                    <p style="font-size: 32px; font-weight: 700; margin: 0;">17.0</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); padding: 35px 25px; border-radius: 15px; color: white; height: 100%; box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);">
+                    <h4 style="margin-bottom: 15px; font-size: 18px;">SIP.js Version</h4>
+                    <p style="font-size: 32px; font-weight: 700; margin: 0;">0.20.0</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 35px 25px; border-radius: 15px; color: white; height: 100%; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);">
+                    <h4 style="margin-bottom: 15px; font-size: 18px;">License</h4>
+                    <p style="font-size: 32px; font-weight: 700; margin: 0;">LGPL-3</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 35px 25px; border-radius: 15px; color: white; height: 100%; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);">
+                    <h4 style="margin-bottom: 15px; font-size: 18px;">Module Version</h4>
+                    <p style="font-size: 32px; font-weight: 700; margin: 0;">1.0.0</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 50px; text-align: center;">
+            <h3 style="color: #2C0091; margin-bottom: 25px; font-size: 28px;">Technology Stack</h3>
+            <div style="display: inline-flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+                <span style="background: white; color: #a8498f; padding: 12px 25px; border-radius: 25px; font-weight: 600; border: 2px solid #a8498f;">WebRTC</span>
+                <span style="background: white; color: #48bb78; padding: 12px 25px; border-radius: 25px; font-weight: 600; border: 2px solid #48bb78;">SIP.js</span>
+                <span style="background: white; color: #667eea; padding: 12px 25px; border-radius: 25px; font-weight: 600; border: 2px solid #667eea;">FreePBX</span>
+                <span style="background: white; color: #e74c3c; padding: 12px 25px; border-radius: 25px; font-weight: 600; border: 2px solid #e74c3c;">Asterisk</span>
+                <span style="background: white; color: #f39c12; padding: 12px 25px; border-radius: 25px; font-weight: 600; border: 2px solid #f39c12;">OWL Components</span>
+                <span style="background: white; color: #3498db; padding: 12px 25px; border-radius: 25px; font-weight: 600; border: 2px solid #3498db;">Web Audio API</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Requirements -->
+<section class="oe_container">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span class="gradient-text"><b>System Requirements</b></span>
+        </h2>
+        
+        <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 50px; border-radius: 20px; border: 2px solid rgba(168, 73, 143, 0.2);">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 style="color: #a8498f; font-size: 22px; margin-bottom: 25px;">
+                        <i class="fa fa-server" style="margin-right: 12px;"></i>Server Requirements
+                    </h4>
+                    <ul style="font-size: 17px; color: #666; line-height: 2.2;">
+                        <li><i class="fa fa-check-circle" style="color: #48bb78; margin-right: 10px;"></i>FreePBX or Asterisk server with WebSocket support</li>
+                        <li><i class="fa fa-check-circle" style="color: #48bb78; margin-right: 10px;"></i>WebSocket module enabled (chan_sip or chan_pjsip)</li>
+                        <li><i class="fa fa-check-circle" style="color: #48bb78; margin-right: 10px;"></i>HTTPS enabled on Odoo server (required for WebRTC)</li>
+                        <li><i class="fa fa-check-circle" style="color: #48bb78; margin-right: 10px;"></i>Valid SSL certificate for secure connections</li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h4 style="color: #667eea; font-size: 22px; margin-bottom: 25px;">
+                        <i class="fa fa-laptop" style="margin-right: 12px;"></i>Client Requirements
+                    </h4>
+                    <ul style="font-size: 17px; color: #666; line-height: 2.2;">
+                        <li><i class="fa fa-check-circle" style="color: #48bb78; margin-right: 10px;"></i>Modern browser (Chrome, Firefox, Edge, Safari)</li>
+                        <li><i class="fa fa-check-circle" style="color: #48bb78; margin-right: 10px;"></i>Microphone and speaker/headset</li>
+                        <li><i class="fa fa-check-circle" style="color: #48bb78; margin-right: 10px;"></i>Stable internet connection</li>
+                        <li><i class="fa fa-check-circle" style="color: #48bb78; margin-right: 10px;"></i>Microphone permissions granted to browser</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Screenshot Placeholder 8 - Contacts Tab -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 60px 40px; border-radius: 20px; margin: 0 auto; max-width: 1200px;">
+        <img class="img-responsive rounded shadow" src="screenshot_contacts.png" style="width:100%; border-radius: 15px; box-shadow: 0 15px 50px rgba(0,0,0,0.2);">
+    </div>
+    <h3 style="color: #a8498f; margin-top: 30px; font-size: 26px; font-weight: 600;">Integrated Contact Management</h3>
+    <p style="color: #666; font-size: 18px; max-width: 800px; margin: 15px auto 50px;">Quick access to all Odoo contacts with search functionality and one-click calling</p>
+</div>
+
+<br/><br/>
+
+<!-- Detailed Features List -->
+<section class="oe_container">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span class="gradient-text"><b>Complete Feature Breakdown</b></span>
+        </h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h3 style="color: #a8498f; font-size: 26px; margin-bottom: 25px; border-bottom: 3px solid #a8498f; padding-bottom: 10px;">
+                    <i class="fa fa-phone-alt" style="margin-right: 10px;"></i>Call Management
+                </h3>
+                <ul style="font-size: 16px; color: #666; line-height: 2;">
+                    <li><i class="fa fa-chevron-right" style="color: #a8498f; margin-right: 10px;"></i>Outbound calling with numeric keypad</li>
+                    <li><i class="fa fa-chevron-right" style="color: #a8498f; margin-right: 10px;"></i>Inbound call handling with answer/decline</li>
+                    <li><i class="fa fa-chevron-right" style="color: #a8498f; margin-right: 10px;"></i>Call transfer and hold capabilities</li>
+                    <li><i class="fa fa-chevron-right" style="color: #a8498f; margin-right: 10px;"></i>DTMF tone generation for IVR navigation</li>
+                    <li><i class="fa fa-chevron-right" style="color: #a8498f; margin-right: 10px;"></i>Call duration tracking in real-time</li>
+                    <li><i class="fa fa-chevron-right" style="color: #a8498f; margin-right: 10px;"></i>Automatic call logging to database</li>
+                    <li><i class="fa fa-chevron-right" style="color: #a8498f; margin-right: 10px;"></i>Partner auto-linking based on caller ID</li>
+                </ul>
+            </div>
+            
+            <div class="col-md-6">
+                <h3 style="color: #48bb78; font-size: 26px; margin-bottom: 25px; border-bottom: 3px solid #48bb78; padding-bottom: 10px;">
+                    <i class="fa fa-record-vinyl" style="margin-right: 10px;"></i>Recording Features
+                </h3>
+                <ul style="font-size: 16px; color: #666; line-height: 2;">
+                    <li><i class="fa fa-chevron-right" style="color: #48bb78; margin-right: 10px;"></i>Automatic recording on call start</li>
+                    <li><i class="fa fa-chevron-right" style="color: #48bb78; margin-right: 10px;"></i>Manual start/stop recording control</li>
+                    <li><i class="fa fa-chevron-right" style="color: #48bb78; margin-right: 10px;"></i>Multiple quality levels (Low/Medium/High)</li>
+                    <li><i class="fa fa-chevron-right" style="color: #48bb78; margin-right: 10px;"></i>Format selection (WebM/MP4/WAV)</li>
+                    <li><i class="fa fa-chevron-right" style="color: #48bb78; margin-right: 10px;"></i>Secure storage as Odoo attachments</li>
+                    <li><i class="fa fa-chevron-right" style="color: #48bb78; margin-right: 10px;"></i>Built-in audio player widget</li>
+                    <li><i class="fa fa-chevron-right" style="color: #48bb78; margin-right: 10px;"></i>Recording download capability</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 40px;">
+            <div class="col-md-6">
+                <h3 style="color: #667eea; font-size: 26px; margin-bottom: 25px; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                    <i class="fa fa-palette" style="margin-right: 10px;"></i>UI/UX Features
+                </h3>
+                <ul style="font-size: 16px; color: #666; line-height: 2;">
+                    <li><i class="fa fa-chevron-right" style="color: #667eea; margin-right: 10px;"></i>Tabbed interface (Dialer/History/Contacts)</li>
+                    <li><i class="fa fa-chevron-right" style="color: #667eea; margin-right: 10px;"></i>Draggable and repositionable window</li>
+                    <li><i class="fa fa-chevron-right" style="color: #667eea; margin-right: 10px;"></i>Wave animations during active calls</li>
+                    <li><i class="fa fa-chevron-right" style="color: #667eea; margin-right: 10px;"></i>Gradient backgrounds with backdrop blur</li>
+                    <li><i class="fa fa-chevron-right" style="color: #667eea; margin-right: 10px;"></i>Smooth transitions and hover effects</li>
+                    <li><i class="fa fa-chevron-right" style="color: #667eea; margin-right: 10px;"></i>Status indicators (Connected/Offline/Recording)</li>
+                    <li><i class="fa fa-chevron-right" style="color: #667eea; margin-right: 10px;"></i>Responsive design for all screen sizes</li>
+                </ul>
+            </div>
+            
+            <div class="col-md-6">
+                <h3 style="color: #e74c3c; font-size: 26px; margin-bottom: 25px; border-bottom: 3px solid #e74c3c; padding-bottom: 10px;">
+                    <i class="fa fa-bell" style="margin-right: 10px;"></i>Audio Feedback
+                </h3>
+                <ul style="font-size: 16px; color: #666; line-height: 2;">
+                    <li><i class="fa fa-chevron-right" style="color: #e74c3c; margin-right: 10px;"></i>Ringback tone during outbound calls</li>
+                    <li><i class="fa fa-chevron-right" style="color: #e74c3c; margin-right: 10px;"></i>Busy tone for failed/rejected calls</li>
+                    <li><i class="fa fa-chevron-right" style="color: #e74c3c; margin-right: 10px;"></i>Ring tone for incoming calls</li>
+                    <li><i class="fa fa-chevron-right" style="color: #e74c3c; margin-right: 10px;"></i>Dynamically generated tones (no external files)</li>
+                    <li><i class="fa fa-chevron-right" style="color: #e74c3c; margin-right: 10px;"></i>Adjustable volume levels</li>
+                    <li><i class="fa fa-chevron-right" style="color: #e74c3c; margin-right: 10px;"></i>Professional quality audio</li>
+                    <li><i class="fa fa-chevron-right" style="color: #e74c3c; margin-right: 10px;"></i>Automatic tone management</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Screenshot Placeholder 9 - User Settings -->
+<div class="col-md-12 text-center" style="padding: 0 20px;">
+    <img class="img-responsive rounded shadow" src="screenshot_user_settings.png" style="width:100%; max-width: 1200px; border-radius: 15px; box-shadow: 0 15px 50px rgba(168, 73, 143, 0.3);">
+    <h3 style="color: #a8498f; margin-top: 25px; font-size: 26px; font-weight: 600;">Flexible User Configuration</h3>
+    <p style="color: #666; font-size: 18px; margin-bottom: 50px;">Per-user SIP settings, recording preferences, and call handling options</p>
+</div>
+
+<br/><br/>
+
+<!-- Use Cases -->
+<section class="oe_container oe_dark">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px; color: #2C0091;">
+            <b>Perfect For</b>
+        </h2>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div style="background: white; padding: 35px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center; height: 100%;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #a8498f, #7d3a75); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-headset" style="font-size: 45px; color: white;"></i>
+                    </div>
+                    <h4 style="color: #a8498f; font-size: 22px; margin-bottom: 15px; font-weight: 600;">Customer Support Teams</h4>
+                    <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                        Handle customer calls directly from Odoo CRM. Access customer records, call history, and notes in one unified interface for superior support.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div style="background: white; padding: 35px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center; height: 100%;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #48bb78, #38a169); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-chart-line" style="font-size: 45px; color: white;"></i>
+                    </div>
+                    <h4 style="color: #48bb78; font-size: 22px; margin-bottom: 15px; font-weight: 600;">Sales Departments</h4>
+                    <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                        Make sales calls with automatic logging, recording for training, and instant access to customer information. Track all interactions seamlessly.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div style="background: white; padding: 35px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center; height: 100%;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-building" style="font-size: 45px; color: white;"></i>
+                    </div>
+                    <h4 style="color: #667eea; font-size: 22px; margin-bottom: 15px; font-weight: 600;">Small to Medium Businesses</h4>
+                    <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                        Professional phone system integrated with your business processes. No need for separate phone software - everything in one place.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Security & Compliance -->
+<section class="oe_container">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px;">
+            <span class="gradient-text"><b>Security & Privacy</b></span>
+        </h2>
+        
+        <div style="background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%); padding: 60px 50px; border-radius: 20px; color: white;">
+            <div class="row">
+                <div class="col-md-3 text-center" style="margin-bottom: 30px;">
+                    <i class="fa fa-lock" style="font-size: 50px; color: #48bb78; margin-bottom: 20px;"></i>
+                    <h4 style="margin-bottom: 15px; font-size: 20px;">TLS Encryption</h4>
+                    <p style="font-size: 15px; opacity: 0.9;">Secure WebSocket connections with TLS 1.2+</p>
+                </div>
+                
+                <div class="col-md-3 text-center" style="margin-bottom: 30px;">
+                    <i class="fa fa-key" style="font-size: 50px; color: #667eea; margin-bottom: 20px;"></i>
+                    <h4 style="margin-bottom: 15px; font-size: 20px;">SRTP Media</h4>
+                    <p style="font-size: 15px; opacity: 0.9;">Encrypted voice streams for privacy</p>
+                </div>
+                
+                <div class="col-md-3 text-center" style="margin-bottom: 30px;">
+                    <i class="fa fa-user-shield" style="font-size: 50px; color: #f39c12; margin-bottom: 20px;"></i>
+                    <h4 style="margin-bottom: 15px; font-size: 20px;">User Permissions</h4>
+                    <p style="font-size: 15px; opacity: 0.9;">Granular access control and security groups</p>
+                </div>
+                
+                <div class="col-md-3 text-center" style="margin-bottom: 30px;">
+                    <i class="fa fa-database" style="font-size: 50px; color: #e74c3c; margin-bottom: 20px;"></i>
+                    <h4 style="margin-bottom: 15px; font-size: 20px;">Secure Storage</h4>
+                    <p style="font-size: 15px; opacity: 0.9;">Recordings stored as encrypted attachments</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<!-- Support & Documentation -->
+<section class="oe_container oe_dark">
+    <div class="col-md-12">
+        <h2 style="font-size: 38px; text-align: center; margin-bottom: 50px; color: #2C0091;">
+            <b>Support & Updates</b>
+        </h2>
+        
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(168, 73, 143, 0.1) 0%, rgba(125, 58, 117, 0.05) 100%); padding: 40px 30px; border-radius: 15px; height: 100%; border: 2px solid rgba(168, 73, 143, 0.3);">
+                    <i class="fa fa-book" style="font-size: 50px; color: #a8498f; margin-bottom: 20px;"></i>
+                    <h4 style="color: #a8498f; font-size: 20px; margin-bottom: 15px; font-weight: 600;">Documentation</h4>
+                    <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                        Comprehensive documentation with setup guides, troubleshooting tips, and API references included.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(56, 161, 105, 0.05) 100%); padding: 40px 30px; border-radius: 15px; height: 100%; border: 2px solid rgba(72, 187, 120, 0.3);">
+                    <i class="fa fa-life-ring" style="font-size: 50px; color: #48bb78; margin-bottom: 20px;"></i>
+                    <h4 style="color: #48bb78; font-size: 20px; margin-bottom: 15px; font-weight: 600;">Premium Support</h4>
+                    <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                        Email and chat support available. Quick response times for bug fixes and technical assistance.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%); padding: 40px 30px; border-radius: 15px; height: 100%; border: 2px solid rgba(102, 126, 234, 0.3);">
+                    <i class="fa fa-sync-alt" style="font-size: 50px; color: #667eea; margin-bottom: 20px;"></i>
+                    <h4 style="color: #667eea; font-size: 20px; margin-bottom: 15px; font-weight: 600;">Regular Updates</h4>
+                    <p style="color: #666; font-size: 16px; line-height: 1.8;">
+                        Continuous improvements, bug fixes, and new features. Stay up-to-date with the latest enhancements.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br/><br/>
+
+<hr style="width: 100%; height: 4px; background: #000000; margin: 0px 0px;">
+<hr style="width: 100%; height: 4px; background: linear-gradient(90deg, #a8498f 0%, #7d3a75 100%); margin: 0px 0px;">
+
+<!-- Our Services -->
+<section class="sh_services" style="padding: 60px 0px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+	<div class="container">
+		<div class="sh_center text-center mb-5">
+            <h4 style="font-size: 38px; font-weight: 700; margin-bottom: 15px;">
+                <span class="gradient-text">Our Services</span>
+            </h4>
+            <p style="font-size: 18px; color: #666; max-width: 700px; margin: 0 auto;">
+                Professional support and customization services for your VoIP implementation
+            </p>
+      </div>
+        
+        <div class="row" style="max-width: 1200px; margin: 0 auto;">
+			<div class="col-md-3 text-center">
+                <div class="box p-4 shadow rounded mb-2" style="background: linear-gradient(135deg, #a8498f 0%, #7d3a75 100%); border: none; border-radius: 15px !important; transition: all 0.3s;">
+                    <a href="mailto:kenzey0man@gmail.com?subject=VoIP WebRTC - Installation Support" target="_blank" style="text-decoration: none;">
+                        <div class="icon_img mb-3">
+                            <i class="fa fa-download" style="font-size: 55px; color: white;"></i>
+						</div>
+						<div class="content">
+                            <p class="mb-0" style="font-size: 18px; color: white; font-weight: 600;">Installation Support</p>
+						</div>
+					</a>
+				</div>
+			</div>
+            
+			<div class="col-md-3 text-center">
+                <div class="box p-4 shadow rounded mb-2" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); border: none; border-radius: 15px !important; transition: all 0.3s;">
+                    <a href="mailto:kenzey0man@gmail.com?subject=VoIP WebRTC - Technical Support" target="_blank" style="text-decoration: none;">
+                        <div class="icon_img mb-3">
+                            <i class="fa fa-cogs" style="font-size: 55px; color: white;"></i>
+						</div>
+						<div class="content">
+                            <p class="mb-0" style="font-size: 18px; color: white; font-weight: 600;">Technical Support</p>
+						</div>
+					</a>
+				</div>
+			</div>
+            
+			<div class="col-md-3 text-center">
+                <div class="box p-4 shadow rounded mb-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 15px !important; transition: all 0.3s;">
+                    <a href="mailto:kenzey0man@gmail.com?subject=VoIP WebRTC - Customization Request" target="_blank" style="text-decoration: none;">
+                        <div class="icon_img mb-3">
+                            <i class="fa fa-paint-brush" style="font-size: 55px; color: white;"></i>
+						</div>
+						<div class="content">
+                            <p class="mb-0" style="font-size: 18px; color: white; font-weight: 600;">Customization</p>
+						</div>
+					</a>
+				</div>
+			</div>
+            
+			<div class="col-md-3 text-center">
+                <div class="box p-4 shadow rounded mb-2" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); border: none; border-radius: 15px !important; transition: all 0.3s;">
+                    <a href="mailto:kenzey0man@gmail.com?subject=VoIP WebRTC - General Inquiry" target="_blank" style="text-decoration: none;">
+                        <div class="icon_img mb-3">
+                            <i class="fa fa-envelope" style="font-size: 55px; color: white;"></i>
+						</div>
+						<div class="content">
+                            <p class="mb-0" style="font-size: 18px; color: white; font-weight: 600;">General Support</p>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<hr style="width: 100%; height: 4px; background: linear-gradient(90deg, #a8498f 0%, #7d3a75 100%); margin: 0px 0px;">
+<hr style="width: 100%; height: 4px; background: #000000; margin: 0px 0px;">
+
+<br/><br/>
+
+<!-- Contact Information -->
+<div class="col-md-12 text-center" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 60px 40px; border-radius: 25px; margin: 30px auto; max-width: 1200px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+    <h3 style="font-size: 32px; margin-bottom: 40px;">
+        <span class="gradient-text"><b>Get in Touch</b></span>
+    </h3>
+    
+    <div class="row">
+        <div class="col-md-6" style="margin-bottom: 25px;">
+            <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-left: 4px solid #a8498f;">
+                <p style="font-size: 18px; color: #333; margin: 0;">
+                    <i class="fa fa-envelope" style="color: #a8498f; margin-right: 15px; font-size: 24px;"></i>
+                <strong>Email:</strong> kenzey0man@gmail.com
+            </p>
+            </div>
+        </div>
+        
+        <div class="col-md-6" style="margin-bottom: 25px;">
+            <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-left: 4px solid #48bb78;">
+                <p style="font-size: 18px; color: #333; margin: 0;">
+                    <i class="fa fa-phone" style="color: #48bb78; margin-right: 15px; font-size: 24px;"></i>
+                <strong>Phone:</strong> +20 100 057 3614
+            </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-6" style="margin-bottom: 25px;">
+            <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-left: 4px solid #667eea;">
+                <p style="font-size: 18px; color: #333; margin: 0;">
+                    <i class="fa fa-clock" style="color: #667eea; margin-right: 15px; font-size: 24px;"></i>
+                <strong>Support Hours:</strong> Mon-Fri: 9AM-6PM (Cairo Time)
+            </p>
+            </div>
+        </div>
+        
+        <div class="col-md-6" style="margin-bottom: 25px;">
+            <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-left: 4px solid #e74c3c;">
+                <p style="font-size: 18px; color: #333; margin: 0;">
+                    <i class="fa fa-globe" style="color: #e74c3c; margin-right: 15px; font-size: 24px;"></i>
+                    <strong>Website:</strong> <a href="https://odoo-vip.com" style="color: #e74c3c; font-weight: 600;">odoo-vip.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/><br/>
+
+<!-- Footer / License -->
+<div class="col-md-12 text-center" style="background: linear-gradient(135deg, #a8498f 0%, #7d3a75 100%); color: white; padding: 50px 30px; border-radius: 20px;">
+    <h3 style="margin-bottom: 30px; font-size: 28px; font-weight: 600;">VoIP WebRTC FreePBX for Odoo 17</h3>
+    
+    <div class="row" style="margin-bottom: 30px;">
+        <div class="col-md-3">
+            <div style="background: rgba(255, 255, 255, 0.15); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px);">
+                <p style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Version</p>
+                <p style="font-size: 24px; font-weight: 700; margin: 0;">17.0.1.0.0</p>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div style="background: rgba(255, 255, 255, 0.15); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px);">
+                <p style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">License</p>
+                <p style="font-size: 24px; font-weight: 700; margin: 0;">LGPL-3</p>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div style="background: rgba(255, 255, 255, 0.15); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px);">
+                <p style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Category</p>
+                <p style="font-size: 24px; font-weight: 700; margin: 0;">Communication</p>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div style="background: rgba(255, 255, 255, 0.15); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px);">
+                <p style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Author</p>
+                <p style="font-size: 24px; font-weight: 700; margin: 0;">Mohamed Samir</p>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid rgba(255, 255, 255, 0.3);">
+        <p style="font-size: 16px; opacity: 0.95; margin-bottom: 10px;">
+            Maintained by <strong>odoo-vip.com</strong>
+        </p>
+        <p style="font-size: 14px; opacity: 0.8;">
+            © 2025 Mohamed Samir. All Rights Reserved.
+        </p>
+        <p style="font-size: 13px; opacity: 0.7; margin-top: 15px;">
+            This module is licensed under LGPL-3. For support, customization, or inquiries, contact us at kenzey0man@gmail.com
+        </p>
+    </div>
+</div>
+
+<br/><br/>
+
 </body>
 </html>

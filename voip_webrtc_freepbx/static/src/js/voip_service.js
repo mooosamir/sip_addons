@@ -16,9 +16,11 @@ export const voipService = {
          */
         async function initialize() {
             try {
+                console.log('🔧 VoIP Service Debug: Initializing...');
                 const result = await rpc('/voip/config', {});
                 if (result.success) {
                     config = result.config;
+                    console.log('🔧 VoIP Service Debug: Config loaded successfully', config);
                     return true;
                 } else {
                     console.error('Failed to load VoIP config:', result.error);
@@ -166,6 +168,7 @@ export const voipService = {
          */
         function setVoipClient(client) {
             voipClient = client;
+            console.log('🔧 VoIP Service Debug: Client set', client);
         }
 
         /**
@@ -182,6 +185,52 @@ export const voipService = {
             return currentCall;
         }
 
+        /**
+         * Handle incoming call
+         */
+        function onIncomingCall(callData) {
+            console.log('🔧 VoIP Service Debug: Incoming call received', callData);
+            currentCall = callData.session;
+            
+            // DON'T show system notification - Custom UI will handle it
+            // notification.add(`Incoming call from ${callData.from}`, {
+            //     type: 'info',
+            //     sticky: true,
+            //     buttons: [
+            //         {
+            //             text: 'Answer',
+            //             primary: true,
+            //             onClick: () => answerCall(callData.session)
+            //         },
+            //         {
+            //             text: 'Decline',
+            //             onClick: () => hangupCall('declined')
+            //         }
+            //     ]
+            // });
+        }
+
+        /**
+         * Get contacts list
+         */
+        async function getContacts(limit = 100) {
+            try {
+                const result = await rpc('/voip/contacts/list', {
+                    limit: limit,
+                });
+
+                if (result.success) {
+                    return result.contacts;
+                } else {
+                    console.error('Failed to get contacts:', result.error);
+                    return [];
+                }
+            } catch (error) {
+                console.error('Error getting contacts:', error);
+                return [];
+            }
+        }
+
         return {
             initialize,
             getConfig,
@@ -190,9 +239,11 @@ export const voipService = {
             hangupCall,
             getCallHistory,
             searchPartner,
+            getContacts,
             setVoipClient,
             getVoipClient,
             getCurrentCall,
+            onIncomingCall,
         };
     },
 };

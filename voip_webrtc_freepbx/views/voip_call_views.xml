@@ -10,13 +10,14 @@
                 <form string="VoIP Call" create="false">
                     <header>
                         <field name="state" widget="statusbar" statusbar_visible="ringing,in_progress,completed"/>
+                        <field name="has_recording" invisible="1"/>
                         <button name="action_view_recordings" type="object" string="View Recordings" 
-                                attrs="{'invisible': [('has_recording', '=', False)]}" class="oe_highlight"/>
+                                invisible="not has_recording" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button name="action_view_recordings" type="object" class="oe_stat_button" icon="fa-microphone"
-                                    attrs="{'invisible': [('has_recording', '=', False)]}">
+                                    invisible="not has_recording">
                                 <field name="recording_count" widget="statinfo" string="Recordings"/>
                             </button>
                         </div>
@@ -54,7 +55,7 @@
                             <page string="Notes" name="notes">
                                 <field name="notes" placeholder="Add notes about this call..."/>
                             </page>
-                            <page string="Recordings" name="recordings" attrs="{'invisible': [('has_recording', '=', False)]}">
+                            <page string="Recordings" name="recordings" invisible="not has_recording">
                                 <field name="recording_ids" readonly="1">
                                     <tree>
                                         <field name="name"/>
@@ -119,14 +120,14 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <strong>
-                                            <i class="fa fa-phone" t-attf-class="fa fa-phone-square {{direction == 'inbound' ? 'text-info' : 'text-success'}}"/>
+                                            <i class="fa fa-phone" t-attf-class="fa fa-phone-square {{direction == 'inbound' ? 'text-info' : 'text-success'}}" title="Call" aria-label="Call"/>
                                             <field name="name"/>
                                         </strong>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-8">
-                                        <i class="fa fa-arrow-right"/> <field name="from_number"/> → <field name="to_number"/>
+                                        <i class="fa fa-arrow-right" title="From/To" aria-label="From/To"/> <field name="from_number"/> → <field name="to_number"/>
                                     </div>
                                     <div class="col-4 text-right">
                                         <field name="state" widget="label_selection" options="{'classes': {'completed': 'success', 'in_progress': 'warning', 'missed': 'danger'}}"/>
@@ -134,11 +135,11 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-8">
-                                        <i class="fa fa-clock-o"/> <field name="duration_display"/>
+                                        <i class="fa fa-clock-o" title="Duration" aria-label="Duration"/> <field name="duration_display"/>
                                     </div>
                                     <div class="col-4 text-right">
                                         <t t-if="record.has_recording.raw_value">
-                                            <i class="fa fa-microphone text-success"/>
+                                            <i class="fa fa-microphone text-success" title="Recording Available" aria-label="Recording Available"/>
                                         </t>
                                     </div>
                                 </div>
@@ -172,7 +173,7 @@
                     <separator/>
                     <filter string="Today" name="today" domain="[('start_time', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
                     <filter string="This Week" name="this_week" domain="[('start_time', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
-                    <filter string="This Month" name="this_month" domain="[('start_time', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Month" name="this_month" domain="[('start_time', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
                     <group expand="0" string="Group By">
                         <filter string="Direction" name="group_direction" context="{'group_by': 'direction'}"/>
                         <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>

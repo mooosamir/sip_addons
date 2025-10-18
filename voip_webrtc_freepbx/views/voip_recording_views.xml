@@ -11,7 +11,7 @@
                     <header>
                         <field name="state" widget="statusbar" statusbar_visible="recording,completed"/>
                         <button name="action_share_recording" type="object" string="Share" class="oe_highlight"/>
-                        <button name="action_download_recording" type="object" string="Download" attrs="{'invisible': [('recording_file', '=', False)]}"/>
+                        <button name="action_download_recording" type="object" string="Download" invisible="not recording_file"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -33,15 +33,30 @@
                             </group>
                         </group>
                         <group>
+                            <group name="caller_info" string="Caller Information">
+                                <field name="caller_display" readonly="1"/>
+                                <field name="caller_user_id" readonly="1"/>
+                                <field name="caller_partner_id" readonly="1"/>
+                            </group>
+                            <group name="callee_info" string="Callee Information">
+                                <field name="callee_display" readonly="1"/>
+                                <field name="callee_user_id" readonly="1"/>
+                                <field name="callee_partner_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
                             <group name="sharing" string="Sharing">
                                 <field name="shared_with_ids" widget="many2many_tags"/>
                             </group>
-                            <group name="technical" string="Technical">
-                                <field name="recording_url"/>
+                            <group name="technical" string="Technical" invisible="not recording_url">
+                                <field name="recording_url" readonly="1"/>
                             </group>
                         </group>
-                        <group string="Recording File">
-                            <field name="recording_file" filename="recording_filename" attrs="{'invisible': [('recording_file', '=', False)]}"/>
+                        <group string="Recording File" invisible="not recording_file">
+                            <field name="recording_file" widget="binary" filename="recording_filename"/>
+                        </group>
+                        <group string="Audio Player" invisible="not recording_url">
+                            <field name="recording_url" widget="voip_audio_player" nolabel="1"/>
                         </group>
                         <notebook>
                             <page string="Notes" name="notes">
@@ -67,6 +82,8 @@
                     <field name="name"/>
                     <field name="call_id"/>
                     <field name="user_id"/>
+                    <field name="caller_display"/>
+                    <field name="callee_display"/>
                     <field name="duration_display"/>
                     <field name="file_size_display"/>
                     <field name="recording_type"/>
@@ -96,14 +113,14 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <strong>
-                                            <i class="fa fa-microphone text-success"/>
+                                            <i class="fa fa-microphone text-success" title="Recording" aria-label="Recording"/>
                                             <field name="name"/>
                                         </strong>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-8">
-                                        <i class="fa fa-phone"/> <field name="call_id"/>
+                                        <i class="fa fa-phone" title="Call" aria-label="Call"/> <field name="call_id"/>
                                     </div>
                                     <div class="col-4 text-right">
                                         <field name="state" widget="label_selection"/>
@@ -111,15 +128,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <i class="fa fa-clock-o"/> <field name="duration_display"/>
+                                        <i class="fa fa-clock-o" title="Duration" aria-label="Duration"/> <field name="duration_display"/>
                                     </div>
                                     <div class="col-6 text-right">
-                                        <i class="fa fa-file"/> <field name="file_size_display"/>
+                                        <i class="fa fa-file" title="File Size" aria-label="File Size"/> <field name="file_size_display"/>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <i class="fa fa-calendar"/> <field name="create_date"/>
+                                        <i class="fa fa-calendar" title="Date" aria-label="Date"/> <field name="create_date"/>
                                     </div>
                                 </div>
                             </div>
@@ -138,6 +155,10 @@
                     <field name="name"/>
                     <field name="call_id"/>
                     <field name="user_id"/>
+                    <field name="caller_user_id"/>
+                    <field name="caller_partner_id"/>
+                    <field name="callee_user_id"/>
+                    <field name="callee_partner_id"/>
                     <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
                     <filter string="Recording" name="recording" domain="[('state', '=', 'recording')]"/>
                     <separator/>
@@ -149,10 +170,14 @@
                     <separator/>
                     <filter string="Today" name="today" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
                     <filter string="This Week" name="this_week" domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
-                    <filter string="This Month" name="this_month" domain="[('create_date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Month" name="this_month" domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
                     <group expand="0" string="Group By">
                         <filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
                         <filter string="Call" name="group_call" context="{'group_by': 'call_id'}"/>
+                        <filter string="Caller (User)" name="group_caller_user" context="{'group_by': 'caller_user_id'}"/>
+                        <filter string="Caller (Contact)" name="group_caller_partner" context="{'group_by': 'caller_partner_id'}"/>
+                        <filter string="Callee (User)" name="group_callee_user" context="{'group_by': 'callee_user_id'}"/>
+                        <filter string="Callee (Contact)" name="group_callee_partner" context="{'group_by': 'callee_partner_id'}"/>
                         <filter string="Type" name="group_type" context="{'group_by': 'recording_type'}"/>
                         <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
                         <filter string="Date" name="group_date" context="{'group_by': 'create_date:day'}"/>

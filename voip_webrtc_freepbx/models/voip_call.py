@@ -1,3 +1,34 @@
+# -*- coding: utf-8 -*-
+#################################################################################
+#
+# Module Name: Voip Webrtc Freepbx
+# Description: Establishes real-time VoIP communication between Odoo and FreePBX 
+#              using WebRTC and PJSIP for seamless browser-based calling integration.
+#
+# Copyright (c) 2025
+# Author: Mohamed Samir Abouelez Abdou
+# Website: https://odoo-vip.com
+# Email: kenzey0man@gmail.com
+# Phone: +20 100 057 3614
+#
+# License: Odoo Proprietary License v1.0 (OPL-1)
+# License URL: https://www.odoo.com/documentation/master/legal/licenses.html#odoo-proprietary-license
+#
+# ---------------------------------------------------------------------------
+# ⚠️ Usage and Modification Restrictions:
+#
+# - This software is licensed under the Odoo Proprietary License (OPL-1).
+# - You are NOT permitted to modify, copy, redistribute, or reuse any part of
+#   this source code without the explicit written consent of the author.
+# - Partial use, extraction, reverse engineering, or integration of this code
+#   into other projects without authorization is strictly prohibited.
+# - Any commercial use or deployment must be approved directly by:
+#     Mohamed Samir Abouelez Abdou
+#     Email: kenzey0man@gmail.com
+#
+# ---------------------------------------------------------------------------
+# © 2025 — All Rights Reserved — Mohamed Samir Abouelez Abdou
+#################################################################################
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import logging
@@ -119,12 +150,15 @@ class VoipCall(models.Model):
     
     recording_count = fields.Integer(
         string='Number of Recordings',
-        compute='_compute_recording_count'
+        compute='_compute_recording_count',
+        store=True
     )
     
     has_recording = fields.Boolean(
         string='Has Recording',
-        compute='_compute_recording_count'
+        compute='_compute_recording_count',
+        store=True,
+        search='_search_has_recording'
     )
     
     notes = fields.Text(
@@ -171,6 +205,24 @@ class VoipCall(models.Model):
         for record in self:
             record.recording_count = len(record.recording_ids)
             record.has_recording = record.recording_count > 0
+            _logger.info('🔧 VoIP Call Debug: Call %s has %s recordings', record.name, record.recording_count)
+    
+    def _search_has_recording(self, operator, value):
+        """Search method for has_recording field"""
+        if operator == '=' and value:
+            # Find calls that have recordings
+            return [('recording_count', '>', 0)]
+        elif operator == '=' and not value:
+            # Find calls without recordings
+            return [('recording_count', '=', 0)]
+        elif operator == '!=' and value:
+            # Find calls without recordings
+            return [('recording_count', '=', 0)]
+        elif operator == '!=' and not value:
+            # Find calls that have recordings
+            return [('recording_count', '>', 0)]
+        else:
+            return []
 
     @api.onchange('from_number', 'to_number', 'direction')
     def _onchange_find_partner(self):

@@ -1,129 +1,324 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <!-- VoIP Systray Template -->
+    <!-- VoIP Systray Template with Tabs -->
     <t t-name="voip_webrtc_freepbx.VoipSystray" owl="1">
         <div class="o_voip_systray dropdown" t-att-class="{'show': state.showDialer}">
             <!-- Systray Icon -->
             <button class="dropdown-toggle btn btn-secondary o-no-caret" 
-                    t-on-click="toggleDialer"
+                    t-on-click.stop="toggleDialer"
                     t-att-class="{'o_voip_registered': state.isRegistered, 'o_voip_in_call': state.inCall}"
                     title="VoIP">
-                <i class="fa fa-phone" t-att-class="{'fa-phone-square': state.inCall}"/>
+                <i class="oi oi-large oi-voip" t-att-class="{'fa-phone-square': state.inCall}"/>
                 <span t-if="state.inCall" class="badge badge-danger o_voip_call_badge">
                     <t t-esc="formattedDuration"/>
                 </span>
             </button>
 
-            <!-- Dialer Dropdown -->
-            <div class="dropdown-menu dropdown-menu-right o_voip_dialer" t-att-class="{'show': state.showDialer}">
+            <!-- Dialer Dropdown with Tabs -->
+            <div class="dropdown-menu o_voip_phone_container" 
+                 t-att-class="{'show': state.showDialer, 'o_voip_dragging': state.isDragging}" 
+                 t-att-style="dialerStyle"
+                 t-on-click.stop="() => {}">
+                
+                <!-- Modern Header with Drag Handle -->
                 <div class="o_voip_dialer_header">
-                    <h5>
-                        <i class="fa fa-phone"/> VoIP Dialer
-                        <span t-if="state.isRegistered" class="badge badge-success ml-2">
-                            <i class="fa fa-circle"/> Connected
-                        </span>
-                        <span t-else="" class="badge badge-secondary ml-2">
-                            <i class="fa fa-circle"/> Offline
-                        </span>
-                    </h5>
-                </div>
-
-                <!-- Active Call Display -->
-                <div t-if="state.inCall" class="o_voip_active_call">
-                    <div class="o_voip_call_info">
-                        <div class="o_voip_call_number">
-                            <i class="fa fa-phone-square text-success"/> 
-                            <t t-esc="state.phoneNumber"/>
+                    <div class="o_voip_header_content">
+                        <div class="o_voip_header_left" t-on-mousedown.stop="startDrag">
+                            <div class="o_voip_header_icon">
+                                <i class="oi oi-large oi-voip"/>
+                            </div>
+                            <div class="o_voip_header_info">
+                                <span class="o_voip_header_title">VoIP Phone</span>
+                                <span class="o_voip_header_status" t-if="state.isRegistered">
+                                    <i class="fa fa-circle o_voip_status_dot"/> Ready
+                                </span>
+                                <span class="o_voip_header_status o_voip_offline" t-else="">
+                                    <i class="fa fa-circle o_voip_status_dot"/> Offline
+                                </span>
+                            </div>
                         </div>
-                        <div class="o_voip_call_duration">
-                            <t t-esc="formattedDuration"/>
+                        <div class="o_voip_header_actions">
+                            <button class="o_voip_header_btn" t-on-click.stop="toggleMinimize" title="Close">
+                                <i class="fa fa-times"/>
+                            </button>
                         </div>
-                    </div>
-                    <div class="o_voip_call_actions">
-                        <button class="btn btn-danger btn-block" t-on-click="hangup">
-                            <i class="fa fa-phone"/> Hang Up
-                        </button>
                     </div>
                 </div>
 
-                <!-- Dialer -->
-                <div t-if="!state.inCall" class="o_voip_dialer_body">
-                    <!-- Phone Number Input -->
-                    <div class="o_voip_number_display">
-                        <input type="text" 
-                               class="form-control" 
-                               placeholder="Enter phone number"
-                               t-model="state.phoneNumber"
-                               t-on-input="onPhoneNumberInput"/>
-                    </div>
+                <!-- Content Area -->
+                <div class="o_voip_content_area">
+                    
+                    <!-- Incoming Call Display - Same Design as Active Call -->
+                    <div t-if="state.incomingCall and !state.inCall" class="o_voip_call_screen">
+                        <!-- Wave Animation -->
+                        <div class="o_voip_call_waves">
+                            <div class="o_voip_wave"></div>
+                            <div class="o_voip_wave"></div>
+                            <div class="o_voip_wave"></div>
+                        </div>
 
-                    <!-- Dial Pad -->
-                    <div class="o_voip_dialpad">
-                        <div class="o_voip_dialpad_row">
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('1')">1</button>
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('2')">2</button>
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('3')">3</button>
-                        </div>
-                        <div class="o_voip_dialpad_row">
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('4')">4</button>
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('5')">5</button>
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('6')">6</button>
-                        </div>
-                        <div class="o_voip_dialpad_row">
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('7')">7</button>
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('8')">8</button>
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('9')">9</button>
-                        </div>
-                        <div class="o_voip_dialpad_row">
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('*')">*</button>
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('0')">0</button>
-                            <button class="btn btn-light" t-on-click="() => this.addDigit('#')">#</button>
-                        </div>
-                    </div>
-
-                    <!-- Call Actions -->
-                    <div class="o_voip_actions">
-                        <button class="btn btn-secondary" t-on-click="backspace">
-                            <i class="fa fa-backspace"/>
-                        </button>
-                        <button class="btn btn-success flex-grow-1" 
-                                t-on-click="makeCall"
-                                t-att-disabled="!state.phoneNumber or !state.isRegistered">
-                            <i class="fa fa-phone"/> Call
-                        </button>
-                    </div>
-
-                    <!-- Recent Calls -->
-                    <div class="o_voip_recent_calls" t-if="state.recentCalls.length">
-                        <div class="o_voip_section_title">Recent Calls</div>
-                        <t t-foreach="state.recentCalls" t-as="call" t-key="call.id">
-                            <div class="o_voip_recent_call" t-on-click="() => this.callRecent(call.direction === 'inbound' ? call.from_number : call.to_number)">
-                                <div class="o_voip_call_icon">
-                                    <i t-att-class="call.direction === 'inbound' ? 'fa fa-phone text-info' : 'fa fa-phone text-success'"/>
-                                </div>
-                                <div class="o_voip_call_details">
-                                    <div class="o_voip_call_name">
-                                        <t t-if="call.partner_name" t-esc="call.partner_name"/>
-                                        <t t-else="" t-esc="call.direction === 'inbound' ? call.from_number : call.to_number"/>
-                                    </div>
-                                    <div class="o_voip_call_meta">
-                                        <t t-esc="call.duration_display"/> · <t t-esc="call.state"/>
-                                    </div>
+                        <!-- Top Section -->
+                        <div class="o_voip_call_top">
+                            <!-- Avatar with Ring Animation -->
+                            <div class="o_voip_call_avatar o_voip_incoming_avatar">
+                                <div class="o_voip_avatar_icon">
+                                    <i class="fa fa-phone o_voip_ring_icon"/>
                                 </div>
                             </div>
-                        </t>
-                    </div>
-                </div>
+                            
+                            <!-- Incoming Call Info -->
+                            <div class="o_voip_contact_name">
+                                <t t-esc="state.incomingCallNumber"/>
+                            </div>
+                            
+                            <!-- Call Status -->
+                            <div class="o_voip_call_status">Incoming Call...</div>
+                        </div>
 
-                <!-- Footer Actions -->
-                <div class="o_voip_dialer_footer">
-                    <button class="btn btn-link btn-sm" t-on-click="openCallHistory">
-                        <i class="fa fa-history"/> Call History
-                    </button>
-                    <button class="btn btn-link btn-sm" t-on-click="openSettings">
-                        <i class="fa fa-cog"/> Settings
-                    </button>
+                        <!-- Call Actions -->
+                        <div class="o_voip_call_controls">
+                            <div class="o_voip_incoming_actions">
+                                <button class="o_voip_answer_btn" t-on-click="() => this.answerCall()">
+                                    <i class="fa fa-phone"/>
+                                    <span>Answer</span>
+                                </button>
+                                <button class="o_voip_decline_btn" t-on-click="() => this.declineCall()">
+                                    <i class="fa fa-phone o_voip_decline_icon"/>
+                                    <span>Decline</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Call Display -->
+                    <div t-if="state.inCall" class="o_voip_call_screen">
+                        <!-- Wave Animation -->
+                        <div class="o_voip_call_waves">
+                            <div class="o_voip_wave"></div>
+                            <div class="o_voip_wave"></div>
+                            <div class="o_voip_wave"></div>
+                        </div>
+
+                        <!-- Top Section -->
+                        <div class="o_voip_call_top">
+                            <!-- Avatar -->
+                            <div class="o_voip_call_avatar">
+                                <div class="o_voip_avatar_icon">
+                                    <i class="fa fa-user"/>
+                                </div>
+                            </div>
+                            
+                            <!-- Contact Info -->
+                            <div class="o_voip_contact_name">
+                                <t t-esc="state.phoneNumber"/>
+                            </div>
+                            
+                            <!-- Call Status -->
+                            <div class="o_voip_call_status">Connected</div>
+                            
+                            <!-- Timer -->
+                            <div class="o_voip_call_timer">
+                                <i class="fa fa-clock-o"/> <t t-esc="formattedDuration"/>
+                            </div>
+                        </div>
+
+                        <!-- Controls Section -->
+                        <div class="o_voip_call_controls">
+                            <!-- Control Buttons Row -->
+                            <div class="o_voip_control_row">
+                                <button class="o_voip_control_btn" 
+                                        t-att-class="{'o_voip_btn_active': state.isSpeaker}"
+                                        t-on-click="toggleSpeaker" 
+                                        title="Speaker">
+                                    <div class="o_voip_control_icon">
+                                        <i t-att-class="state.isSpeaker ? 'fa fa-volume-up' : 'fa fa-volume-down'"/>
+                                    </div>
+                                    <div class="o_voip_control_label">Speaker</div>
+                                </button>
+                                
+                                <button t-if="state.canControlRecording" 
+                                        class="o_voip_control_btn" 
+                                        t-att-class="{'o_voip_btn_active': state.isRecording}"
+                                        t-on-click="() => state.isRecording ? this.stopRecording() : this.startRecording()" 
+                                        title="Record">
+                                    <div class="o_voip_control_icon">
+                                        <i t-att-class="state.isRecording ? 'fa fa-stop' : 'fa fa-circle'"/>
+                                    </div>
+                                    <div class="o_voip_control_label">
+                                        <t t-if="state.isRecording">Stop Rec</t>
+                                        <t t-else="">Record</t>
+                                    </div>
+                                </button>
+                                
+                                <button class="o_voip_control_btn" 
+                                        t-att-class="{'o_voip_btn_active': state.isMuted}"
+                                        t-on-click="toggleMute" 
+                                        title="Mute">
+                                    <div class="o_voip_control_icon">
+                                        <i t-att-class="state.isMuted ? 'fa fa-microphone-slash' : 'fa fa-microphone'"/>
+                                    </div>
+                                    <div class="o_voip_control_label">
+                                        <t t-if="state.isMuted">Unmute</t>
+                                        <t t-else="">Mute</t>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <!-- Recording Status -->
+                            <div t-if="state.isRecording" class="o_voip_recording_status">
+                                <i class="fa fa-circle o_voip_rec_indicator"/> Recording...
+                            </div>
+                            <div t-elif="!state.canControlRecording and state.autoStartRecording" class="o_voip_recording_status o_voip_auto_rec">
+                                <i class="fa fa-lock"/> Auto Recording
+                            </div>
+
+                            <!-- End Call Button -->
+                            <button class="o_voip_end_call_btn" t-on-click="hangup" title="End Call">
+                                <i class="fa fa-phone o_voip_end_call_icon"/>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabs and Content (only show when not in call) -->
+                    <div t-if="!state.inCall and !state.incomingCall" class="o_voip_tabs_container">
+                        <!-- Tab Content -->
+                        <div class="o_voip_tab_content">
+                            <!-- Dialer Tab -->
+                            <div t-if="state.activeTab === 'dialer'" class="o_voip_dialer_body">
+                                <!-- Phone Number Input -->
+                                <div class="o_voip_number_display">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           placeholder="Enter phone number"
+                                           t-model="state.phoneNumber"
+                                           t-on-input="onPhoneNumberInput"/>
+                                </div>
+
+                                <!-- Dial Pad -->
+                                <div class="o_voip_dialpad">
+                                    <div class="o_voip_dialpad_row">
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('1')">1</button>
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('2')">2</button>
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('3')">3</button>
+                                    </div>
+                                    <div class="o_voip_dialpad_row">
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('4')">4</button>
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('5')">5</button>
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('6')">6</button>
+                                    </div>
+                                    <div class="o_voip_dialpad_row">
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('7')">7</button>
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('8')">8</button>
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('9')">9</button>
+                                    </div>
+                                    <div class="o_voip_dialpad_row">
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('*')">*</button>
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('0')">0</button>
+                                        <button class="btn btn-light" t-on-click="() => this.addDigit('#')">#</button>
+                                    </div>
+                                </div>
+
+                                <!-- Call Actions -->
+                                <div class="o_voip_actions">
+                                    <button class="btn btn-secondary" t-on-click="backspace">
+                                        <i class="fa fa-backspace"/>
+                                    </button>
+                                    <button class="btn btn-success flex-grow-1" 
+                                            t-on-click="makeCall"
+                                            t-att-disabled="!state.phoneNumber or !state.isRegistered">
+                                        <i class="fa fa-phone"/> Call
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- History Tab -->
+                            <div t-if="state.activeTab === 'history'" class="o_voip_history_screen">
+                                <div t-if="state.recentCalls.length === 0" class="text-center text-muted p-4">
+                                    <i class="fa fa-history fa-3x mb-3"/>
+                                    <p>No call history</p>
+                                </div>
+                                <t t-foreach="state.recentCalls" t-as="call" t-key="call.id">
+                                    <div class="o_voip_history_item" t-on-click="() => this.callRecent(call.direction === 'inbound' ? call.from_number : call.to_number)">
+                                        <div class="o_voip_history_icon" t-att-class="call.direction === 'inbound' ? 'incoming' : 'outgoing'">
+                                            <i t-att-class="call.direction === 'inbound' ? 'fa fa-phone-alt' : 'fa fa-phone'"/>
+                                        </div>
+                                        <div class="o_voip_history_details">
+                                            <div class="o_voip_history_name">
+                                                <t t-if="call.partner_name" t-esc="call.partner_name"/>
+                                                <t t-else="" t-esc="call.direction === 'inbound' ? call.from_number : call.to_number"/>
+                                            </div>
+                                            <div class="o_voip_history_time">
+                                                <t t-esc="call.duration_display"/>
+                                            </div>
+                                            <div class="o_voip_history_number">
+                                                <t t-esc="call.direction === 'inbound' ? call.from_number : call.to_number"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Contacts Tab -->
+                            <div t-if="state.activeTab === 'contacts'" class="o_voip_contacts_screen">
+                                <!-- Search Box -->
+                                <div class="o_voip_search_box mb-3">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           placeholder="Search contacts..."
+                                           t-model="state.searchQuery"/>
+                                </div>
+
+                                <!-- Contacts List -->
+                                <div class="o_voip_contacts_list">
+                                    <div t-if="filteredContacts.length === 0" class="text-center text-muted p-4">
+                                        <i class="fa fa-users fa-3x mb-3"/>
+                                        <p>No contacts found</p>
+                                    </div>
+                                    <t t-foreach="filteredContacts" t-as="contact" t-key="contact.id">
+                                        <div class="o_voip_contact_item">
+                                            <div class="o_voip_contact_avatar">
+                                                <t t-esc="contact.name[0].toUpperCase()"/>
+                                            </div>
+                                            <div class="o_voip_contact_info">
+                                                <div class="o_voip_contact_name">
+                                                    <t t-esc="contact.name"/>
+                                                </div>
+                                                <div class="o_voip_contact_phone">
+                                                    <t t-esc="contact.phone"/>
+                                                </div>
+                                            </div>
+                                            <button class="o_voip_quick_call_btn" t-on-click="() => this.callContact(contact.phone)">
+                                                <i class="fa fa-phone"/>
+                                            </button>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Tabs -->
+                        <div class="o_voip_bottom_tabs">
+                            <button class="o_voip_tab" 
+                                    t-att-class="{'active': state.activeTab === 'dialer'}"
+                                    t-on-click="() => this.switchTab('dialer')">
+                                <i class="fa fa-phone"/>
+                                <span>Dialer</span>
+                            </button>
+                            <button class="o_voip_tab" 
+                                    t-att-class="{'active': state.activeTab === 'history'}"
+                                    t-on-click="() => this.switchTab('history')">
+                                <i class="fa fa-history"/>
+                                <span>History</span>
+                            </button>
+                            <button class="o_voip_tab" 
+                                    t-att-class="{'active': state.activeTab === 'contacts'}"
+                                    t-on-click="() => this.switchTab('contacts')">
+                                <i class="fa fa-users"/>
+                                <span>Contacts</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

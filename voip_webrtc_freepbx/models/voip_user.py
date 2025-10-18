@@ -1,3 +1,34 @@
+# -*- coding: utf-8 -*-
+#################################################################################
+#
+# Module Name: Voip Webrtc Freepbx
+# Description: Establishes real-time VoIP communication between Odoo and FreePBX 
+#              using WebRTC and PJSIP for seamless browser-based calling integration.
+#
+# Copyright (c) 2025
+# Author: Mohamed Samir Abouelez Abdou
+# Website: https://odoo-vip.com
+# Email: kenzey0man@gmail.com
+# Phone: +20 100 057 3614
+#
+# License: Odoo Proprietary License v1.0 (OPL-1)
+# License URL: https://www.odoo.com/documentation/master/legal/licenses.html#odoo-proprietary-license
+#
+# ---------------------------------------------------------------------------
+# ⚠️ Usage and Modification Restrictions:
+#
+# - This software is licensed under the Odoo Proprietary License (OPL-1).
+# - You are NOT permitted to modify, copy, redistribute, or reuse any part of
+#   this source code without the explicit written consent of the author.
+# - Partial use, extraction, reverse engineering, or integration of this code
+#   into other projects without authorization is strictly prohibited.
+# - Any commercial use or deployment must be approved directly by:
+#     Mohamed Samir Abouelez Abdou
+#     Email: kenzey0man@gmail.com
+#
+# ---------------------------------------------------------------------------
+# © 2025 — All Rights Reserved — Mohamed Samir Abouelez Abdou
+#################################################################################
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import logging
@@ -97,6 +128,30 @@ class VoipUser(models.Model):
         help='Enable call recording for this user'
     )
     
+    auto_start_recording = fields.Boolean(
+        string='Auto Start Recording',
+        default=True,
+        help='Automatically start recording when call begins'
+    )
+    
+    can_control_recording = fields.Boolean(
+        string='Can Control Recording',
+        default=False,
+        help='Allow user to manually start/stop recording during calls'
+    )
+    
+    recording_quality = fields.Selection([
+        ('low', 'Low (64kbps)'),
+        ('medium', 'Medium (128kbps)'),
+        ('high', 'High (256kbps)'),
+    ], string='Recording Quality', default='medium')
+    
+    recording_format = fields.Selection([
+        ('webm', 'WebM (Recommended)'),
+        ('mp4', 'MP4'),
+        ('wav', 'WAV'),
+    ], string='Recording Format', default='webm')
+    
     last_login = fields.Datetime(
         string='Last Login',
         readonly=True
@@ -163,6 +218,10 @@ class VoipUser(models.Model):
                 'auto_answer': self.auto_answer,
                 'ring_tone': self.ring_tone,
                 'enable_recording': self.enable_recording,
+                'auto_start_recording': self.auto_start_recording,
+                'can_control_recording': self.can_control_recording,
+                'recording_quality': self.recording_quality,
+                'recording_format': self.recording_format,
             }
         }
 

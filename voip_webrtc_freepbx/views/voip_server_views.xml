@@ -20,7 +20,7 @@
                                 <field name="call_count" widget="statinfo" string="Calls"/>
                             </button>
                         </div>
-                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Server Name"/>
@@ -38,14 +38,14 @@
                             <group name="webrtc_config" string="WebRTC Configuration">
                                 <field name="stun_server"/>
                                 <field name="turn_server"/>
-                                <field name="turn_username" attrs="{'invisible': [('turn_server', '=', False)]}"/>
-                                <field name="turn_password" password="True" attrs="{'invisible': [('turn_server', '=', False)]}"/>
+                                <field name="turn_username" invisible="not turn_server"/>
+                                <field name="turn_password" password="True" invisible="not turn_server"/>
                             </group>
                         </group>
                         <group>
                             <group name="recording_config" string="Recording Configuration">
                                 <field name="enable_recording"/>
-                                <field name="recording_path" attrs="{'invisible': [('enable_recording', '=', False)]}"/>
+                                <field name="recording_path" invisible="not enable_recording"/>
                             </group>
                             <group name="other" string="Other">
                                 <field name="company_id" groups="base.group_multi_company"/>

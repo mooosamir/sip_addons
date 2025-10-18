@@ -1,7 +1,40 @@
-from odoo import http
+# -*- coding: utf-8 -*-
+#################################################################################
+#
+# Module Name: Voip Webrtc Freepbx
+# Description: Establishes real-time VoIP communication between Odoo and FreePBX 
+#              using WebRTC and PJSIP for seamless browser-based calling integration.
+#
+# Copyright (c) 2025
+# Author: Mohamed Samir Abouelez Abdou
+# Website: https://odoo-vip.com
+# Email: kenzey0man@gmail.com
+# Phone: +20 100 057 3614
+#
+# License: Odoo Proprietary License v1.0 (OPL-1)
+# License URL: https://www.odoo.com/documentation/master/legal/licenses.html#odoo-proprietary-license
+#
+# ---------------------------------------------------------------------------
+# ⚠️ Usage and Modification Restrictions:
+#
+# - This software is licensed under the Odoo Proprietary License (OPL-1).
+# - You are NOT permitted to modify, copy, redistribute, or reuse any part of
+#   this source code without the explicit written consent of the author.
+# - Partial use, extraction, reverse engineering, or integration of this code
+#   into other projects without authorization is strictly prohibited.
+# - Any commercial use or deployment must be approved directly by:
+#     Mohamed Samir Abouelez Abdou
+#     Email: kenzey0man@gmail.com
+#
+# ---------------------------------------------------------------------------
+# © 2025 — All Rights Reserved — Mohamed Samir Abouelez Abdou
+#################################################################################
+from odoo import http, fields
 from odoo.http import request, Response
 import json
 import logging
+import base64
+import time
 
 _logger = logging.getLogger(__name__)
 
@@ -12,6 +45,7 @@ class VoipController(http.Controller):
     def get_voip_config(self, **kwargs):
         """Get VoIP configuration for current user"""
         try:
+            _logger.info('🔧 VoIP Controller Debug: Getting VoIP config for user %s', request.env.user.name)
             user = request.env.user
             voip_user = request.env['voip.user'].search([
                 ('user_id', '=', user.id),
@@ -253,3 +287,126 @@ class VoipController(http.Controller):
         except Exception as e:
             _logger.exception("Error searching partner: %s", str(e))
             return {'success': False, 'error': str(e)}
+
+    @http.route('/voip/contacts/list', type='json', auth='user')
+    def get_contacts_list(self, limit=100, **kwargs):
+        """Get contacts list with phone numbers"""
+        try:
+            partners = request.env['res.partner'].search([
+                '|', ('phone', '!=', False), ('mobile', '!=', False)
+            ], limit=limit, order='name')
+            
+            contacts = []
+            for partner in partners:
+                phone = partner.phone or partner.mobile
+                if phone:
+                    contacts.append({
+                        'id': partner.id,
+                        'name': partner.name,
+                        'phone': phone,
+                        'mobile': partner.mobile,
+                        'email': partner.email,
+                        'company': partner.parent_id.name if partner.parent_id else None,
+                    })
+            
+            return {
+                'success': True,
+                'contacts': contacts
+            }
+        except Exception as e:
+            _logger.exception("Error getting contacts list: %s", str(e))
+            return {'success': False, 'error': str(e)}
+
+    @http.route('/voip_webrtc_freepbx/save_recording', type='http', auth='user', methods=['POST'], csrf=False)
+    def save_recording(self):
+        """Save call recording to server"""
+        try:
+            _logger.info('🔧 VoIP Controller Debug: ===== SAVE RECORDING START =====')
+            _logger.info('🔧 VoIP Controller Debug: User: %s', request.env.user.name)
+            _logger.info('🔧 VoIP Controller Debug: User ID: %s', request.env.user.id)
+            _logger.info('🔧 VoIP Controller Debug: Request method: %s', request.httprequest.method)
+            _logger.info('🔧 VoIP Controller Debug: Content type: %s', request.httprequest.content_type)
+            _logger.info('🔧 VoIP Controller Debug: Content length: %s', request.httprequest.content_length)
+            
+            # Get uploaded file
+            recording_file = request.httprequest.files.get('recording')
+            call_id_str = request.httprequest.form.get('call_id', '0')
+            duration = int(request.httprequest.form.get('duration', 0))
+            
+            # Convert call_id to integer
+            try:
+                call_id = int(call_id_str)
+            except (ValueError, TypeError):
+                _logger.error('🔧 VoIP Controller Debug: Invalid call_id: %s', call_id_str)
+                return json.dumps({'error': 'Invalid call_id'})
+            
+            _logger.info('🔧 VoIP Controller Debug: Call ID: %s (type: %s)', call_id, type(call_id).__name__)
+            _logger.info('🔧 VoIP Controller Debug: Duration from request: %s seconds', duration)
+            _logger.info('🔧 VoIP Controller Debug: Recording file: %s', recording_file)
+            
+            if not recording_file:
+                _logger.error('🔧 VoIP Controller Debug: No recording file provided')
+                return json.dumps({'error': 'No recording file provided'})
+            
+            _logger.info('🔧 VoIP Controller Debug: Recording file name: %s', recording_file.filename)
+            _logger.info('🔧 VoIP Controller Debug: Recording file size: %s bytes', len(recording_file.read()))
+            recording_file.seek(0)  # Reset file pointer
+            
+            # Get voip.call record to calculate actual duration
+            call = request.env['voip.call'].browse(call_id)
+            if call.exists() and call.duration > 0:
+                duration = call.duration
+                _logger.info('🔧 VoIP Controller Debug: Using call duration: %s seconds', duration)
+            else:
+                _logger.warning('🔧 VoIP Controller Debug: Call not found or duration is 0, using request duration: %s', duration)
+            
+            # Create voip.recording record
+            recording_data = {
+                'name': f'Call Recording - {call_id}',
+                'call_id': call_id,
+                'duration': duration,
+                'state': 'completed',  # Mark as completed since we have the file
+                # user_id will be auto-populated from call_id.odoo_user_id (related field)
+                # caller/callee will be auto-populated by create() method
+            }
+            
+            _logger.info('🔧 VoIP Controller Debug: Recording data: %s', recording_data)
+            
+            # Read file data
+            file_data = recording_file.read()
+            _logger.info('🔧 VoIP Controller Debug: File data size: %s bytes', len(file_data))
+            
+            # Encode to base64
+            attachment_data = base64.b64encode(file_data)
+            _logger.info('🔧 VoIP Controller Debug: Base64 data size: %s bytes', len(attachment_data))
+            
+            # Add recording file and filename to recording data
+            recording_data['recording_file'] = attachment_data
+            recording_data['recording_filename'] = f'call_recording_{call_id}_{int(time.time())}.webm'
+            recording_data['file_size'] = len(file_data)
+            
+            _logger.info('🔧 VoIP Controller Debug: Updated recording data with file')
+            
+            # Create recording record (attachment will be auto-created because attachment=True)
+            recording = request.env['voip.recording'].create(recording_data)
+            _logger.info('🔧 VoIP Controller Debug: Recording record created with ID: %s', recording.id)
+            
+            _logger.info('🔧 VoIP Controller Debug: Recording saved successfully')
+            _logger.info('🔧 VoIP Controller Debug: Final recording ID: %s', recording.id)
+            _logger.info('🔧 VoIP Controller Debug: File size: %s bytes', recording.file_size)
+            _logger.info('🔧 VoIP Controller Debug: ===== SAVE RECORDING END =====')
+            
+            return json.dumps({
+                'success': True,
+                'recording_id': recording.id,
+                'file_size': recording.file_size,
+                'message': 'Recording saved successfully'
+            })
+            
+        except Exception as e:
+            _logger.error('🔧 VoIP Controller Debug: ===== SAVE RECORDING ERROR =====')
+            _logger.error('🔧 VoIP Controller Debug: Error type: %s', type(e).__name__)
+            _logger.error('🔧 VoIP Controller Debug: Error message: %s', str(e))
+            _logger.error('🔧 VoIP Controller Debug: Error details: %s', repr(e))
+            _logger.error('🔧 VoIP Controller Debug: ===== END ERROR =====')
+            return json.dumps({'error': str(e)})
