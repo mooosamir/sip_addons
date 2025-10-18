@@ -6,7 +6,7 @@
 #              using WebRTC and PJSIP for seamless browser-based calling integration.
 #
 # Copyright (c) 2025
-# Author: Mohamed Samir Abouelez Abdou
+# Author: Mohamed Samir Abouelez 
 # Website: https://odoo-vip.com
 # Email: kenzey0man@gmail.com
 # Phone: +20 100 057 3614
@@ -23,11 +23,11 @@
 # - Partial use, extraction, reverse engineering, or integration of this code
 #   into other projects without authorization is strictly prohibited.
 # - Any commercial use or deployment must be approved directly by:
-#     Mohamed Samir Abouelez Abdou
+#     Mohamed Samir Abouelez 
 #     Email: kenzey0man@gmail.com
 #
 # ---------------------------------------------------------------------------
-# © 2025 — All Rights Reserved — Mohamed Samir Abouelez Abdou
+# © 2025 — All Rights Reserved — Mohamed Samir Abouelez 
 #################################################################################
 from odoo import http, fields
 from odoo.http import request, Response
@@ -352,13 +352,16 @@ class VoipController(http.Controller):
             _logger.info('🔧 VoIP Controller Debug: Recording file size: %s bytes', len(recording_file.read()))
             recording_file.seek(0)  # Reset file pointer
             
-            # Get voip.call record to calculate actual duration
+            # Verify call exists
             call = request.env['voip.call'].browse(call_id)
-            if call.exists() and call.duration > 0:
-                duration = call.duration
-                _logger.info('🔧 VoIP Controller Debug: Using call duration: %s seconds', duration)
-            else:
-                _logger.warning('🔧 VoIP Controller Debug: Call not found or duration is 0, using request duration: %s', duration)
+            if not call.exists():
+                _logger.error('🔧 VoIP Controller Debug: Call with ID %s not found', call_id)
+                return json.dumps({'error': f'Call {call_id} not found'})
+            
+            # Use duration from JavaScript (calculated from actual call time)
+            # Don't use call.duration because end_time might not be updated yet
+            _logger.info('🔧 VoIP Controller Debug: Using duration from JavaScript: %s seconds', duration)
+            _logger.info('🔧 VoIP Controller Debug: Call duration (for reference): %s seconds', call.duration if call.duration else 0)
             
             # Create voip.recording record
             recording_data = {

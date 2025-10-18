@@ -792,22 +792,6 @@ export class VoipSipClient {
     }
 
     /**
-     * Stop recording
-     */
-    async stopRecording() {
-        try {
-            console.log('🔧 VoIP SIP Client Debug: Stopping recording');
-            
-            if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
-                this.mediaRecorder.stop();
-            }
-        } catch (error) {
-            console.error('🔧 VoIP SIP Client Debug: Failed to stop recording:', error);
-            throw error;
-        }
-    }
-
-    /**
      * Save recording to server
      */
     async saveRecording() {
@@ -815,12 +799,26 @@ export class VoipSipClient {
         console.log('🔧 VoIP SIP Client Debug: Recorded chunks available:', this.recordedChunks ? this.recordedChunks.length : 'none');
         console.log('🔧 VoIP SIP Client Debug: Odoo call ID:', this.odooCallId);
         console.log('🔧 VoIP SIP Client Debug: Current session:', this.currentSession);
+        console.log('🔧 VoIP SIP Client Debug: Recording saved flag:', this.recordingSaved);
+        console.log('🔧 VoIP SIP Client Debug: Recording saving in progress:', this.recordingSaving);
         
         try {
+            // Check if already saved OR currently saving
+            if (this.recordingSaved || this.recordingSaving) {
+                console.log('🔧 VoIP SIP Client Debug: Recording already saved or saving in progress - EXITING to prevent duplicate');
+                console.log('🔧 VoIP SIP Client Debug: recordingSaved:', this.recordingSaved);
+                console.log('🔧 VoIP SIP Client Debug: recordingSaving:', this.recordingSaving);
+                return;
+            }
+            
             if (this.recordedChunks.length === 0) {
                 console.log('🔧 VoIP SIP Client Debug: No recording data to save - EXITING');
                 return;
             }
+            
+            // Mark as saving IMMEDIATELY to prevent duplicate calls (race condition protection)
+            this.recordingSaving = true;
+            console.log('🔧 VoIP SIP Client Debug: Set recordingSaving flag to LOCK this operation');
 
             console.log('🔧 VoIP SIP Client Debug: ===== PROCEEDING WITH SAVE =====');
             console.log('🔧 VoIP SIP Client Debug: Saving recording to server');
@@ -828,11 +826,19 @@ export class VoipSipClient {
             console.log('🔧 VoIP SIP Client Debug: Call ID:', this.currentSession ? this.currentSession.id : 'unknown');
             
             // Calculate duration
-            const duration = this.getCallDuration();
+            let duration = this.getCallDuration();
             console.log('⏱️ VoIP SIP Client Debug: callStartTime:', this.callStartTime);
             console.log('⏱️ VoIP SIP Client Debug: callEndTime:', this.callEndTime);
             console.log('⏱️ VoIP SIP Client Debug: Current time:', Date.now());
             console.log('⏱️ VoIP SIP Client Debug: Calculated duration:', duration, 'seconds');
+            
+            // Fallback: estimate duration from recording size if callStartTime was not set
+            if (duration === 0 && this.recordedChunks.length > 0) {
+                // Rough estimate: 1 second of recording ≈ 8-16 KB (depending on quality)
+                const totalSize = this.recordedChunks.reduce((sum, chunk) => sum + chunk.size, 0);
+                duration = Math.max(1, Math.floor(totalSize / 10000)); // Conservative estimate
+                console.log('⚠️ VoIP SIP Client Debug: callStartTime was not set, estimated duration from recording size:', duration, 'seconds');
+            }
             
             const blob = new Blob(this.recordedChunks, { type: 'audio/webm' });
             console.log('🔧 VoIP SIP Client Debug: Blob size:', blob.size, 'bytes');
@@ -874,6 +880,10 @@ export class VoipSipClient {
                 console.log('🔧 VoIP SIP Client Debug: Server response:', result);
                 console.log('🔧 VoIP SIP Client Debug: Recording ID:', result.recording_id);
                 console.log('🔧 VoIP SIP Client Debug: Success message:', result.message);
+                
+                // Mark as saved after successful save
+                this.recordingSaved = true;
+                console.log('🔧 VoIP SIP Client Debug: Set recordingSaved = true after successful save');
             } else {
                 console.error('🔧 VoIP SIP Client Debug: Server error occurred');
                 console.error('🔧 VoIP SIP Client Debug: Status:', response.status);
@@ -886,6 +896,11 @@ export class VoipSipClient {
 
         } catch (error) {
             console.error('🔧 VoIP SIP Client Debug: Failed to save recording:', error);
+            console.error('🔧 VoIP SIP Client Debug: Error details:', error.message);
+        } finally {
+            // Always unlock the saving flag to allow retry on error
+            this.recordingSaving = false;
+            console.log('🔧 VoIP SIP Client Debug: Released recordingSaving lock');
         }
     }
 
@@ -1111,10 +1126,13 @@ export class VoipSipClient {
         console.log('🔧 VoIP SIP Client Debug: Clearing current session...');
         this.currentSession = null;
         
-        // Reset call timing
-        console.log('⏱️ Resetting call timing variables');
+        // Reset call timing and recording state
+        console.log('⏱️ Resetting call timing and recording variables');
         this.callStartTime = null;
         this.callEndTime = null;
+        this.recordingSaved = false;
+        this.recordingSaving = false;
+        console.log('🔧 VoIP SIP Client Debug: Reset recording flags for next call');
 
         console.log('🔧 VoIP SIP Client Debug: Notifying service...');
         // Notify service
@@ -1135,7 +1153,11 @@ export class VoipSipClient {
             console.log('🔧 VoIP SIP Client Debug: Stream tracks:', stream ? stream.getTracks() : 'none');
             console.log('🔧 VoIP SIP Client Debug: Stream active:', stream ? stream.active : 'none');
             
+            // Reset recording state
             this.recordedChunks = [];
+            this.recordingSaved = false;
+            this.recordingSaving = false;
+            console.log('🔧 VoIP SIP Client Debug: Reset recording flags for new recording');
 
             // Create MediaRecorder
             const options = MediaRecorder.isTypeSupported('audio/webm') 

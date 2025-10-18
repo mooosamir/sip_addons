@@ -6,7 +6,7 @@
 #              using WebRTC and PJSIP for seamless browser-based calling integration.
 #
 # Copyright (c) 2025
-# Author: Mohamed Samir Abouelez Abdou
+# Author: Mohamed Samir Abouelez 
 # Website: https://odoo-vip.com
 # Email: kenzey0man@gmail.com
 # Phone: +20 100 057 3614
@@ -23,11 +23,11 @@
 # - Partial use, extraction, reverse engineering, or integration of this code
 #   into other projects without authorization is strictly prohibited.
 # - Any commercial use or deployment must be approved directly by:
-#     Mohamed Samir Abouelez Abdou
+#     Mohamed Samir Abouelez 
 #     Email: kenzey0man@gmail.com
 #
 # ---------------------------------------------------------------------------
-# © 2025 — All Rights Reserved — Mohamed Samir Abouelez Abdou
+# © 2025 — All Rights Reserved — Mohamed Samir Abouelez 
 #################################################################################
 from . import voip_server
 from . import voip_user
