@@ -35,6 +35,7 @@ import json
 import logging
 import base64
 import time
+from ..utils.logging_utils import VoipLoggingUtils
 
 _logger = logging.getLogger(__name__)
 
@@ -45,7 +46,10 @@ class VoipController(http.Controller):
     def get_voip_config(self, **kwargs):
         """Get VoIP configuration for current user"""
         try:
-            _logger.info('🔧 VoIP Controller Debug: Getting VoIP config for user %s', request.env.user.name)
+            VoipLoggingUtils.log_if_enabled(
+                request.env, _logger, 'info', 
+                'Getting VoIP config for user %s', request.env.user.name
+            )
             user = request.env.user
             voip_user = request.env['voip.user'].search([
                 ('user_id', '=', user.id),
@@ -62,12 +66,20 @@ class VoipController(http.Controller):
             voip_user.update_last_login()
             
             config = voip_user.get_voip_config()
+            
+            # Add logging configuration
+            logging_config = VoipLoggingUtils.get_js_logging_config(request.env, voip_user.server_id.id)
+            config['logging'] = logging_config
+            
             return {
                 'success': True,
                 'config': config
             }
         except Exception as e:
-            _logger.exception("Error getting VoIP config: %s", str(e))
+            VoipLoggingUtils.log_if_enabled(
+                request.env, _logger, 'error', 
+                "Error getting VoIP config: %s", str(e)
+            )
             return {
                 'success': False,
                 'error': str(e)
@@ -103,7 +115,10 @@ class VoipController(http.Controller):
                 'call_name': call.name
             }
         except Exception as e:
-            _logger.exception("Error creating call: %s", str(e))
+            VoipLoggingUtils.log_if_enabled(
+                request.env, _logger, 'error', 
+                "Error creating call: %s", str(e)
+            )
             return {'success': False, 'error': str(e)}
 
     @http.route('/voip/call/update', type='json', auth='user')

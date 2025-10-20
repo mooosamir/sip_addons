@@ -48,6 +48,7 @@
                                 <field name="recording_path" invisible="not enable_recording"/>
                             </group>
                             <group name="other" string="Other">
+                                <field name="logging_mode"/>
                                 <field name="company_id" groups="base.group_multi_company"/>
                                 <field name="active"/>
                             </group>
@@ -79,6 +80,7 @@
                     <field name="user_count"/>
                     <field name="call_count"/>
                     <field name="enable_recording"/>
+                    <field name="logging_mode"/>
                     <field name="active"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                 </tree>

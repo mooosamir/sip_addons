@@ -2,6 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { browser } from "@web/core/browser/browser";
+import { voipLogger } from "./voip_logging";
 
 export const voipService = {
     dependencies: ["rpc", "notification"],
@@ -16,18 +17,20 @@ export const voipService = {
          */
         async function initialize() {
             try {
-                console.log('🔧 VoIP Service Debug: Initializing...');
+                voipLogger.debug('Initializing...');
                 const result = await rpc('/voip/config', {});
                 if (result.success) {
                     config = result.config;
-                    console.log('🔧 VoIP Service Debug: Config loaded successfully', config);
+                    // Update logger configuration
+                    voipLogger.updateConfig(config);
+                    voipLogger.debug('Config loaded successfully', config);
                     return true;
                 } else {
-                    console.error('Failed to load VoIP config:', result.error);
+                    voipLogger.error('Failed to load VoIP config:', result.error);
                     return false;
                 }
             } catch (error) {
-                console.error('Error initializing VoIP:', error);
+                voipLogger.error('Error initializing VoIP:', error);
                 return false;
             }
         }
@@ -63,7 +66,7 @@ export const voipService = {
                     return false;
                 }
             } catch (error) {
-                console.error('Error making call:', error);
+                voipLogger.error('Error making call:', error);
                 notification.add('Failed to make call', { type: 'danger' });
                 return false;
             }
@@ -87,7 +90,7 @@ export const voipService = {
                     return false;
                 }
             } catch (error) {
-                console.error('Error answering call:', error);
+                voipLogger.error('Error answering call:', error);
                 return false;
             }
         }
@@ -115,7 +118,7 @@ export const voipService = {
                     return false;
                 }
             } catch (error) {
-                console.error('Error hanging up call:', error);
+                voipLogger.error('Error hanging up call:', error);
                 return false;
             }
         }
@@ -133,11 +136,11 @@ export const voipService = {
                 if (result.success) {
                     return result.calls;
                 } else {
-                    console.error('Failed to get call history:', result.error);
+                    voipLogger.error('Failed to get call history:', result.error);
                     return [];
                 }
             } catch (error) {
-                console.error('Error getting call history:', error);
+                voipLogger.error('Error getting call history:', error);
                 return [];
             }
         }
@@ -154,11 +157,11 @@ export const voipService = {
                 if (result.success) {
                     return result.partner;
                 } else {
-                    console.error('Failed to search partner:', result.error);
+                    voipLogger.error('Failed to search partner:', result.error);
                     return null;
                 }
             } catch (error) {
-                console.error('Error searching partner:', error);
+                voipLogger.error('Error searching partner:', error);
                 return null;
             }
         }
@@ -168,7 +171,7 @@ export const voipService = {
          */
         function setVoipClient(client) {
             voipClient = client;
-            console.log('🔧 VoIP Service Debug: Client set', client);
+            voipLogger.debug('Client set', client);
         }
 
         /**
@@ -189,7 +192,7 @@ export const voipService = {
          * Handle incoming call
          */
         function onIncomingCall(callData) {
-            console.log('🔧 VoIP Service Debug: Incoming call received', callData);
+            voipLogger.debug('Incoming call received', callData);
             currentCall = callData.session;
             
             // DON'T show system notification - Custom UI will handle it
@@ -222,11 +225,11 @@ export const voipService = {
                 if (result.success) {
                     return result.contacts;
                 } else {
-                    console.error('Failed to get contacts:', result.error);
+                    voipLogger.error('Failed to get contacts:', result.error);
                     return [];
                 }
             } catch (error) {
-                console.error('Error getting contacts:', error);
+                voipLogger.error('Error getting contacts:', error);
                 return [];
             }
         }

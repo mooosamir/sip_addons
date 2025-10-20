@@ -32,6 +32,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import logging
+from ..utils.logging_utils import VoipLoggingUtils
 
 _logger = logging.getLogger(__name__)
 
@@ -228,3 +229,9 @@ class VoipUser(models.Model):
     def update_last_login(self):
         self.ensure_one()
         self.last_login = fields.Datetime.now()
+        # Log login update based on server logging mode
+        VoipLoggingUtils.log_if_enabled(
+            self.env, _logger, 'info', 
+            'VoIP user %s logged in', self.name, 
+            server_id=self.server_id.id
+        )
